@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/lifus/wro4j-runtime-taglib.svg?branch=master)](https://travis-ci.org/lifus/wro4j-runtime-taglib)
+
 # Features
 
 1. Run-time support for [namingStrategy][1] configuration option.
