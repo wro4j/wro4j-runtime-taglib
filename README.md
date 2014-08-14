@@ -14,13 +14,13 @@
 
 ## Prerequisites
 
-### Java 7 or higher.
+* Java 7 or higher.
 
-### [Java Servlet 3.0 API][2] or higher.
+* [Java Servlet 3.0 API][2] or higher.
 
-### [Wro4j][3] 1.7.x.
+* [Wro4j][3] 1.7.x.
 
-### [WroServletContextListener and WroContextFilter in web.xml][4].
+* [WroServletContextListener and WroContextFilter in web.xml][4].
 ```xml
   <listener>
     <listener-class>ro.isdc.wro.http.WroServletContextListener</listener-class>
