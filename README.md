@@ -39,23 +39,23 @@
 
 ## Installation
 
-### Step 1: Add ContextListener to web.xml *after* WroServletContextListener
-```xml
+1. Add ContextListener to web.xml *after* WroServletContextListener
+  ```xml
   <listener>
     <listener-class>by.wro.runtime.taglib.servlet.TaglibServletContextListener</listener-class>
   </listener>
-```
+  ```
 
-### Step 2: include the following tag library directive in every JSP in which optimized resources are used
-```jsp
-<%@ taglib prefix="wro" uri="https://github.com/lifus/wro4j-runtime-taglib"%>
-```
+2. include the following tag library directive in every JSP in which optimized resources are used
+  ```jsp
+  <%@ taglib prefix="wro" uri="https://github.com/lifus/wro4j-runtime-taglib"%>
+  ```
 
-### Step 3: Replace usages of optimized resources with tags
-```html
-<wro:script group="all" />
-<wro:stylesheet group="all" />
-```
+3. Replace usages of optimized resources with tags
+  ```html
+  <wro:script group="all" />
+  <wro:stylesheet group="all" />
+  ```
 
 ## Configuration
 
