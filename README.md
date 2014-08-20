@@ -44,7 +44,7 @@
 1. Add ContextListener to web.xml *after* WroServletContextListener
   ```xml
   <listener>
-    <listener-class>by.wro.runtime.taglib.servlet.TaglibServletContextListener</listener-class>
+    <listener-class>com.github.lifus.wro4j_runtime_taglib.servlet.TaglibServletContextListener</listener-class>
   </listener>
   ```
 

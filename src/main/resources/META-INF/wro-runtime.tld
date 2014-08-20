@@ -11,7 +11,7 @@
 
 	<tag>
 		<name>script</name>
-		<tag-class>by.wro.runtime.taglib.tag.ScriptTag</tag-class>
+		<tag-class>com.github.lifus.wro4j_runtime_taglib.tag.ScriptTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<description>wro4j model group name.</description>
@@ -23,7 +23,7 @@
 
 	<tag>
 		<name>stylesheet</name>
-		<tag-class>by.wro.runtime.taglib.tag.StylesheetTag</tag-class>
+		<tag-class>com.github.lifus.wro4j_runtime_taglib.tag.StylesheetTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<description>wro4j model group name.</description>
