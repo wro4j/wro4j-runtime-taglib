@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Aleksey Polkanov. All rights reserved.
+ * Copyright (c) 2014 Aleksei Polkanov. All rights reserved.
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 package com.github.lifus.wro4j_runtime_taglib.tag;
