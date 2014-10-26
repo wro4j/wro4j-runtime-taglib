@@ -16,10 +16,10 @@ import ro.isdc.wro.util.LazyInitializer;
  */
 public final class InjectorInitializer extends LazyInitializer<Injector> {
 
-  private final WroManagerFactory managerFactory;
+  private final WroManagerFactory wroManagerFactory;
 
-  public InjectorInitializer(final WroManagerFactory managerFactory) {
-    this.managerFactory = managerFactory;
+  public InjectorInitializer(final WroManagerFactory wroManagerFactory) {
+    this.wroManagerFactory = wroManagerFactory;
   }
 
   /**
@@ -27,7 +27,7 @@ public final class InjectorInitializer extends LazyInitializer<Injector> {
    */
   @Override
   protected Injector initialize() {
-    return InjectorBuilder.create(managerFactory).build();
+    return InjectorBuilder.create(wroManagerFactory).build();
   }
 
 }

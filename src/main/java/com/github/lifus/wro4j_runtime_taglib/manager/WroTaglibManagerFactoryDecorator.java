@@ -26,14 +26,14 @@ public final class WroTaglibManagerFactoryDecorator extends WroManagerFactoryDec
   private final ResourceChangedCallbackInitializer resourceChangedCallbackInitializer;
 
   public WroTaglibManagerFactoryDecorator(
-    final WroManagerFactory managerFactory,
+    final WroManagerFactory wroManagerFactory,
     final GroupNameCacheInitializer nameCacheInitializer,
-    final ResourceUriCacheInitializer pathCacheInitializer,
+    final ResourceUriCacheInitializer resourceUriCacheInitializer,
     final InjectorInitializer injectorInitializer
   ) {
-    super(managerFactory);
+    super(wroManagerFactory);
     this.groupNameCacheInitializer = nameCacheInitializer;
-    this.resourceChangedCallbackInitializer = new ResourceChangedCallbackInitializer(pathCacheInitializer, injectorInitializer);
+    this.resourceChangedCallbackInitializer = new ResourceChangedCallbackInitializer(resourceUriCacheInitializer, injectorInitializer);
   }
 
   /**
@@ -43,19 +43,19 @@ public final class WroTaglibManagerFactoryDecorator extends WroManagerFactoryDec
   protected void onBeforeBuild(final Builder builder) {
     super.onBeforeBuild(builder);
 
-    final WroManager manager = getDecoratedObject().create();
-    decorateGroupExtractor(builder, manager);
-    addResourceChangedCallbackListener(manager);
+    final WroManager wroManager = getDecoratedObject().create();
+    decorateGroupExtractor(builder, wroManager);
+    addResourceChangedCallbackListener(wroManager);
   }
 
-  private void decorateGroupExtractor(final Builder builder, final WroManager manager) {
-    GroupExtractor groupExtractor = manager.getGroupExtractor();
+  private void decorateGroupExtractor(final Builder builder, final WroManager wroManager) {
+    GroupExtractor groupExtractor = wroManager.getGroupExtractor();
     groupExtractor = new GroupNameExtractorDecorator(groupExtractor, groupNameCacheInitializer);
     builder.setGroupExtractor(groupExtractor);
   }
 
-  private void addResourceChangedCallbackListener(final WroManager manager) {
-    manager.registerCallback(new ObjectFactory<LifecycleCallback>() {
+  private void addResourceChangedCallbackListener(final WroManager wroManager) {
+    wroManager.registerCallback(new ObjectFactory<LifecycleCallback>() {
 
       @Override
       public LifecycleCallback create() {

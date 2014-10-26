@@ -45,8 +45,8 @@ public final class TaglibContext {
   }
 
   // should be invoked from factory only.
-  TaglibContext(final ResourceUriCacheInitializer groupPathsCacheInitializer) {
-    this.resourceUriCacheInitializer = groupPathsCacheInitializer;
+  TaglibContext(final ResourceUriCacheInitializer resourceUriCacheInitializer) {
+    this.resourceUriCacheInitializer = resourceUriCacheInitializer;
   }
 
   /**

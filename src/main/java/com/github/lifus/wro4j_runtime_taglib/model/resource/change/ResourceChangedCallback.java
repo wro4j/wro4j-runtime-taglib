@@ -24,7 +24,7 @@ public final class ResourceChangedCallback extends LifecycleCallbackSupport {
   private static final String[] NO_VALUE = null;
 
   @Inject
-  private WroModelFactory modelFactory;
+  private WroModelFactory wroModelFactory;
 
   private final ResourceUriCache resourceUriCache;
 
@@ -50,7 +50,7 @@ public final class ResourceChangedCallback extends LifecycleCallbackSupport {
 
   private Collection<String> getGroupNames(final Resource resource) {
     final String uri = resource.getUri();
-    final WroModelInspector wroModelInspector = new WroModelInspector(modelFactory.create());
+    final WroModelInspector wroModelInspector = new WroModelInspector(wroModelFactory.create());
     return wroModelInspector.getGroupNamesContainingResource(uri);
   }
 

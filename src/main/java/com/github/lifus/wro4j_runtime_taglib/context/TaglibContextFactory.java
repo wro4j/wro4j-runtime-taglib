@@ -35,17 +35,28 @@ public final class TaglibContextFactory {
    */
   TaglibContext create() {
     final ServletContextAttributeHelper attributeHelper = new ServletContextAttributeHelper(servletContext);
-    WroManagerFactory managerFactory = attributeHelper.getManagerFactory();
-    final InjectorInitializer injectorInitializer = new InjectorInitializer(managerFactory);
-    final ConfigurationHelper configuration = new ConfigurationHelper(servletContext);
-    final CacheStrategyFactory cacheStrategyFactory = new ConfigurableCacheStrategyFactory(configuration);
+    WroManagerFactory wroManagerFactory = attributeHelper.getManagerFactory();
+    final InjectorInitializer injectorInitializer = new InjectorInitializer(wroManagerFactory);
+    final ConfigurationHelper configurationHelper = new ConfigurationHelper(servletContext);
+    final CacheStrategyFactory cacheStrategyFactory = new ConfigurableCacheStrategyFactory(configurationHelper);
 
     final GroupNameCacheInitializer groupNameCacheInitializer = new GroupNameCacheInitializer(cacheStrategyFactory);
-    final ResourceUriCacheInitializer resourceUriCacheInitializer = new ResourceUriCacheInitializer(servletContext, groupNameCacheInitializer, configuration, cacheStrategyFactory, injectorInitializer);
+    final ResourceUriCacheInitializer resourceUriCacheInitializer = new ResourceUriCacheInitializer(
+      servletContext,
+      groupNameCacheInitializer,
+      configurationHelper,
+      cacheStrategyFactory,
+      injectorInitializer
+    );
 
     // TODO: it's a side-effect. consider to move it elsewhere.
-    managerFactory = new WroTaglibManagerFactoryDecorator(managerFactory, groupNameCacheInitializer, resourceUriCacheInitializer, injectorInitializer);
-    attributeHelper.setManagerFactory(managerFactory);
+    wroManagerFactory = new WroTaglibManagerFactoryDecorator(
+      wroManagerFactory,
+      groupNameCacheInitializer,
+      resourceUriCacheInitializer,
+      injectorInitializer
+    );
+    attributeHelper.setManagerFactory(wroManagerFactory);
 
     return new TaglibContext(resourceUriCacheInitializer);
   }

@@ -37,7 +37,7 @@ public final class UnoptimizedResourceUriStrategy extends AbstractResourceUriStr
   private static final Logger LOGGER = LoggerFactory.getLogger(UnoptimizedResourceUriStrategy.class);
 
   @Inject
-  private WroModelFactory modelFactory;
+  private WroModelFactory wroModelFactory;
 
   private final ConfigurationHelper configuration;
 
@@ -48,7 +48,11 @@ public final class UnoptimizedResourceUriStrategy extends AbstractResourceUriStr
     }
   };
 
-  public UnoptimizedResourceUriStrategy(final String contextPath, final ConfigurationHelper configurationHelper, final OptimizedResourcesRootProvider mappingStrategy) {
+  public UnoptimizedResourceUriStrategy(
+    final String contextPath,
+    final ConfigurationHelper configurationHelper,
+    final OptimizedResourcesRootProvider mappingStrategy
+  ) {
     super(contextPath, mappingStrategy);
     this.configuration = configurationHelper;
   }
@@ -67,7 +71,7 @@ public final class UnoptimizedResourceUriStrategy extends AbstractResourceUriStr
   }
 
   private List<Resource> getResources(final String groupName, final ResourceType type) {
-    final Group group = new WroModelInspector(modelFactory.create()).getGroupByName(groupName);
+    final Group group = new WroModelInspector(wroModelFactory.create()).getGroupByName(groupName);
     if (group == null) {
       throw new WroRuntimeException("No such group available in the model: " + groupName);
     }
