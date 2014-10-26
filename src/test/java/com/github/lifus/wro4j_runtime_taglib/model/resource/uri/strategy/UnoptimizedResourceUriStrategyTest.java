@@ -22,6 +22,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
+
 import ro.isdc.wro.WroRuntimeException;
 import ro.isdc.wro.config.jmx.WroConfiguration;
 import ro.isdc.wro.model.WroModel;
@@ -32,7 +34,7 @@ import ro.isdc.wro.model.resource.Resource;
 /**
  * Tests for {@link UnoptimizedResourceUriStrategy}.
  */
-@PrepareForTest({WroModel.class, Group.class, WroConfiguration.class})
+@PrepareForTest({WroModel.class, Group.class, WroConfiguration.class, ConfigurationHelper.class})
 public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestBase {
 
   private static final String URI = "uri";
@@ -46,6 +48,8 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
 
   @Mock
   private WroModel wroModel;
+  @Mock
+  private ConfigurationHelper configurationHelper;
 
   @Override
   protected ResourceUriStrategy getResourceUriStrategy() {
@@ -54,7 +58,7 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
 
   @BeforeMethod
   public void setUp() {
-    unoptimizedResourceUriStrategy = new UnoptimizedResourceUriStrategy(getOptimizedResourcesRootProvider());
+    unoptimizedResourceUriStrategy = new UnoptimizedResourceUriStrategy(CONTEXT_PATH, configurationHelper, getOptimizedResourcesRootProvider());
   }
 
   @Test(expectedExceptions=WroRuntimeException.class)
@@ -76,7 +80,6 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
   public void shouldThrowExceptionIfThereIsNoSuchResourceAndIgnoreEmptyGroupIsFalse() {
     givenModelFactoryInjected();
     givenModelContains(group(withoutResources()));
-    givenContextInjected();
     givenIgnoreEmptyGroupIs(false);
 
     whenGetResourceUris();
@@ -86,7 +89,6 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
   public void shouldReturnEmptyArrayIfThereIsNoSuchResource() {
     givenModelFactoryInjected();
     givenModelContains(group(withoutResources()));
-    givenContextInjected();
     givenIgnoreEmptyGroupIs(true);
 
     assertThat(whenGetResourceUris(), is(emptyArray()));
@@ -96,7 +98,6 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
   public void shouldReturnLocalUriIfThereIsSuchResource() {
     givenModelFactoryInjected();
     givenModelContains(group(withResource(URI)));
-    givenContextInjected();
     givenContextPathHasBeenSetUp();
 
     assertThat(whenGetResourceUris(), is(arrayContaining(EXPECTED_PUBLIC_URI)));
@@ -106,7 +107,6 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
   public void shouldReturnProtectedUriIfThereIsSuchResource() {
     givenModelFactoryInjected();
     givenModelContains(group(withResource(PROTECTED_URI)));
-    givenContextInjected();
     givenContextPathHasBeenSetUp();
     givenWroRootHasBeenSetUp();
 
@@ -117,7 +117,6 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
   public void shouldReturnAbsoluteUriIfThereIsSuchResource() {
     givenModelFactoryInjected();
     givenModelContains(group(withResource(ABSOLUTE_URI)));
-    givenContextInjected();
     givenContextPathHasBeenSetUp();
 
     assertThat(whenGetResourceUris(), is(arrayContaining(ABSOLUTE_URI)));
@@ -134,13 +133,7 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
   }
 
   private void givenIgnoreEmptyGroupIs(final boolean value) {
-    when(mockWroConfiguration().isIgnoreEmptyGroup()).thenReturn(value);
-  }
-
-  private WroConfiguration mockWroConfiguration() {
-    final WroConfiguration configuration = mock(WroConfiguration.class);
-    when(getContext().getConfig()).thenReturn(configuration);
-    return configuration;
+    when(configurationHelper.isIgnoreEmptyGroup()).thenReturn(value);
   }
 
   private Group group(final List<Resource> resources) {

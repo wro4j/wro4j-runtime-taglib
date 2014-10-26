@@ -17,6 +17,7 @@ import static ro.isdc.wro.cache.ConfigurableCacheStrategy.KEY;
 import java.util.Properties;
 
 import org.mockito.Mock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.testng.PowerMockTestCase;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -33,6 +34,7 @@ import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
 /**
  * Tests for {@link ConfigurableCacheStrategyFactory}.
  */
+@PrepareForTest(ConfigurationHelper.class)
 public class ConfigurableCacheStrategyFactoryTest extends PowerMockTestCase {
 
   private ConfigurableCacheStrategyFactory configurableCacheStrategyFactory;

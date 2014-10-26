@@ -27,16 +27,19 @@ public final class ConfigurableResourceUriStrategy extends AbstractConfigurableS
   private final OptimizedResourcesRootProvider optimizedResourcesRootProvider;
   private final VersionedGroupNameFactory versionedGroupNameFactory;
   private final ConfigurationHelper configuration;
+  private final String contextPath;
 
   public ConfigurableResourceUriStrategy(
     final OptimizedResourcesRootProvider optimizedResourcesRootProvider,
     final VersionedGroupNameFactory versionedGroupNameFactory,
-    final ConfigurationHelper configuration
+    final ConfigurationHelper configuration,
+    final String contextPath
   ) {
 
     this.optimizedResourcesRootProvider = optimizedResourcesRootProvider;
     this.versionedGroupNameFactory = versionedGroupNameFactory;
     this.configuration = configuration;
+    this.contextPath = contextPath;
   }
 
   /**
@@ -52,7 +55,7 @@ public final class ConfigurableResourceUriStrategy extends AbstractConfigurableS
    */
   @Override
   protected ResourceUriStrategy getDefaultStrategy() {
-    return new VersionedResourceUriStrategy(optimizedResourcesRootProvider, versionedGroupNameFactory);
+    return new VersionedResourceUriStrategy(contextPath, optimizedResourcesRootProvider, versionedGroupNameFactory);
   }
 
   /**
@@ -85,6 +88,8 @@ public final class ConfigurableResourceUriStrategy extends AbstractConfigurableS
   @Override
   protected void overrideDefaultStrategyMap(final Map<String, ResourceUriStrategy> map) {
     final DefaultResourceUriStrategyProvider strategyProvider = new DefaultResourceUriStrategyProvider(
+      contextPath,
+      configuration,
       optimizedResourcesRootProvider,
       versionedGroupNameFactory
     );

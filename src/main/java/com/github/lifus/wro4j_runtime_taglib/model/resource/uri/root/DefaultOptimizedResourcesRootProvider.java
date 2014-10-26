@@ -11,9 +11,7 @@ import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 
 import ro.isdc.wro.WroRuntimeException;
-import ro.isdc.wro.config.ReadOnlyContext;
 import ro.isdc.wro.http.WroFilter;
-import ro.isdc.wro.model.group.Inject;
 
 /**
  * Finds out the root of WRO resources using {@link FilterRegistration} of {@link WroFilter}.
@@ -25,8 +23,11 @@ public final class DefaultOptimizedResourcesRootProvider extends AbstractOptimiz
 
   protected static final String FILTER_CLASS_NAME = WroFilter.class.getCanonicalName();
 
-  @Inject
-  private ReadOnlyContext context;
+  private final ServletContext servletContext;
+
+  public DefaultOptimizedResourcesRootProvider(final ServletContext servletContext) {
+    this.servletContext = servletContext;
+  }
 
   /**
    * {@inheritDoc}
@@ -42,7 +43,6 @@ public final class DefaultOptimizedResourcesRootProvider extends AbstractOptimiz
   }
 
   private Collection<? extends FilterRegistration> getFilterRegistrations() {
-    final ServletContext servletContext = context.getServletContext();
     final Map<String, ? extends FilterRegistration> filterRegistrations = servletContext.getFilterRegistrations();
     return filterRegistrations.values();
   }

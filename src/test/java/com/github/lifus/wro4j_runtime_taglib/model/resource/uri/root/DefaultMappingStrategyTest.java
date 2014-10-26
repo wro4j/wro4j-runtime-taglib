@@ -9,7 +9,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
-import static org.powermock.reflect.Whitebox.setInternalState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,24 +18,28 @@ import java.util.Map;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 
+import org.mockito.Mock;
+import org.powermock.modules.testng.PowerMockTestCase;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import ro.isdc.wro.WroRuntimeException;
-import ro.isdc.wro.config.ReadOnlyContext;
 
 /**
  * Tests for {@link DefaultOptimizedResourcesRootProvider}.
  */
-public class DefaultMappingStrategyTest {
+public class DefaultMappingStrategyTest extends PowerMockTestCase {
 
   private static final String NO_PATTERN = null;
 
   private DefaultOptimizedResourcesRootProvider defaultOptimizedResourcesRootProvider;
 
+  @Mock
+  private ServletContext servletContext;
+
   @BeforeMethod
   public void setUp() {
-    defaultOptimizedResourcesRootProvider = new DefaultOptimizedResourcesRootProvider();
+    defaultOptimizedResourcesRootProvider = new DefaultOptimizedResourcesRootProvider(servletContext);
   }
 
   @Test(expectedExceptions=WroRuntimeException.class, expectedExceptionsMessageRegExp="[\\w\\.]+ is not registered in web.xml.")
@@ -84,12 +87,6 @@ public class DefaultMappingStrategyTest {
 
   @SuppressWarnings("unchecked")
   private void givenFiltersAreRegistratered(final FilterRegistration... filters) {
-    final ReadOnlyContext context = mock(ReadOnlyContext.class);
-    setInternalState(defaultOptimizedResourcesRootProvider, "context", context);
-
-    final ServletContext servletContext = mock(ServletContext.class);
-    when(context.getServletContext()).thenReturn(servletContext);
-
     @SuppressWarnings("rawtypes")
     final Map filterRegistrations = mock(Map.class);
     when(servletContext.getFilterRegistrations()).thenReturn(filterRegistrations);

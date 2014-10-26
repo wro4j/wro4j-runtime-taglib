@@ -4,8 +4,6 @@
  */
 package com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy;
 
-import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
-import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 import javax.servlet.ServletContext;
@@ -13,7 +11,6 @@ import javax.servlet.ServletContext;
 import org.mockito.Mock;
 import org.powermock.modules.testng.PowerMockTestCase;
 
-import ro.isdc.wro.config.ReadOnlyContext;
 import ro.isdc.wro.model.resource.ResourceType;
 
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.OptimizedResourcesRootProvider;
@@ -29,13 +26,9 @@ public abstract class ResourceUriStrategyTestBase extends PowerMockTestCase {
   protected static final String GROUP = "group";
 
   @Mock
-  private ReadOnlyContext context;
+  private ServletContext servletContext;
   @Mock
   private OptimizedResourcesRootProvider optimizedResourcesRootProvider;
-
-  protected ReadOnlyContext getContext() {
-    return context;
-  }
 
   protected OptimizedResourcesRootProvider getOptimizedResourcesRootProvider() {
     return optimizedResourcesRootProvider;
@@ -48,18 +41,7 @@ public abstract class ResourceUriStrategyTestBase extends PowerMockTestCase {
   }
 
   protected void givenContextPathHasBeenSetUp() {
-    final ServletContext servletContext = mockServletContext();
     when(servletContext.getContextPath()).thenReturn(CONTEXT_PATH);
-  }
-
-  private ServletContext mockServletContext() {
-    final ServletContext servletContext = mock(ServletContext.class);
-    when(context.getServletContext()).thenReturn(servletContext);
-    return servletContext;
-  }
-
-  protected void givenContextInjected() {
-    setInternalState(getResourceUriStrategy(), "context", context);
   }
 
   protected String[] whenGetResourceUris() {

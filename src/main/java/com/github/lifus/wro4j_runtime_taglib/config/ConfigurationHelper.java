@@ -10,8 +10,8 @@ import java.util.Properties;
 
 import javax.servlet.ServletContext;
 
-import ro.isdc.wro.config.factory.PropertiesAndFilterConfigWroConfigurationFactory;
 import ro.isdc.wro.config.factory.ServletContextPropertyWroConfigurationFactory;
+import ro.isdc.wro.config.jmx.WroConfiguration;
 
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy.ConfigurableResourceUriStrategy;
 
@@ -23,8 +23,9 @@ import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy.Configu
  *
  * @see {@link ServletContextPropertyWroConfigurationFactory} for properties source.
  */
-public class ConfigurationHelper {
+public final class ConfigurationHelper {
 
+  private final boolean ignoreEmptyGroup;
   private final Properties wroProperties;
 
   /**
@@ -35,19 +36,10 @@ public class ConfigurationHelper {
    */
   public ConfigurationHelper(final ServletContext servletContext) {
     notNull(servletContext);
-    wroProperties = createProperties(servletContext);
-  }
-
-  /**
-   * Creates {@link Properties} using {@link ServletContextPropertyWroConfigurationFactory}.
-   * You may override it and use e.g. {@link PropertiesAndFilterConfigWroConfigurationFactory}.
-   *
-   * @param servletContext
-   *          current servlet context.
-   * @return WRO properties.
-   */
-  protected Properties createProperties(final ServletContext servletContext) {
-    return new ServletContextPropertyWroConfigurationFactory(servletContext).createProperties();
+    final ServletContextPropertyWroConfigurationFactory wroConfigurationFactory = new ServletContextPropertyWroConfigurationFactory(servletContext);
+    final WroConfiguration wroConfiguration = wroConfigurationFactory.create();
+    ignoreEmptyGroup = wroConfiguration.isIgnoreEmptyGroup();
+    wroProperties = wroConfigurationFactory.createProperties();
   }
 
   /**
@@ -64,6 +56,13 @@ public class ConfigurationHelper {
       propertiesForKey.put(key, wroProperties.getProperty(key));
     }
     return propertiesForKey;
+  }
+
+  /**
+   * @return true if empty groups are allowed.
+   */
+  public boolean isIgnoreEmptyGroup() {
+    return ignoreEmptyGroup;
   }
 
 }

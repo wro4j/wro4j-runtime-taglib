@@ -10,6 +10,8 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mock;
 
+import javax.servlet.ServletContext;
+
 import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.testng.PowerMockTestCase;
@@ -27,11 +29,13 @@ import com.github.lifus.wro4j_runtime_taglib.model.group.name.cache.GroupNameCac
 /**
  * Tests for {@link ResourceUriCacheInitializer}.
  */
-@PrepareForTest(Injector.class)
+@PrepareForTest({Injector.class, InjectorInitializer.class, GroupNameCacheInitializer.class, ConfigurationHelper.class})
 public class ResourceUriCacheInitializerTest extends PowerMockTestCase {
 
   private ResourceUriCacheInitializer resourceUriCacheInitializer;
 
+  @Mock
+  private ServletContext servletContext;
   @Mock
   private CacheStrategyFactory cacheStrategyFactory;
   @Mock
@@ -39,15 +43,20 @@ public class ResourceUriCacheInitializerTest extends PowerMockTestCase {
 
   @BeforeMethod
   public void setUp() {
-    resourceUriCacheInitializer = new ResourceUriCacheInitializer(mock(GroupNameCacheInitializer.class), mock(ConfigurationHelper.class), cacheStrategyFactory, injectorInitializer);
+    resourceUriCacheInitializer = new ResourceUriCacheInitializer(servletContext, mock(GroupNameCacheInitializer.class), mock(ConfigurationHelper.class), cacheStrategyFactory, injectorInitializer);
   }
 
   @Test
   public void shouleCreateResourceUriCache() {
+    givenServletContext();
     givenInjectorHasBeenInitialized();
     givenCacheStrategyHasBeenConfigured();
 
     thenShouldInitializeResourceUriCache();
+  }
+
+  private void givenServletContext() {
+    when(servletContext.getContextPath()).thenReturn(mock(String.class));
   }
 
   private void givenInjectorHasBeenInitialized() {

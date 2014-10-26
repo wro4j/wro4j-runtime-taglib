@@ -28,11 +28,12 @@ public final class VersionedResourceUriStrategy extends AbstractResourceUriStrat
   };
 
   public VersionedResourceUriStrategy(
+    final String contextPath,
     final OptimizedResourcesRootProvider optimizedResourcesRootProvider,
     final VersionedGroupNameFactory versionedGroupNameFactory
   ) {
 
-    super(optimizedResourcesRootProvider);
+    super(contextPath, optimizedResourcesRootProvider);
     this.versionedGroupNameFactory = versionedGroupNameFactory;
   }
 

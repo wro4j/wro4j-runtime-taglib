@@ -4,6 +4,8 @@
  */
 package com.github.lifus.wro4j_runtime_taglib.model.resource.uri.cache;
 
+import javax.servlet.ServletContext;
+
 import ro.isdc.wro.cache.CacheStrategy;
 import ro.isdc.wro.util.LazyInitializer;
 
@@ -25,17 +27,20 @@ import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy.Configu
  */
 public final class ResourceUriCacheInitializer extends LazyInitializer<ResourceUriCache> {
 
+  private final ServletContext servletContext;
   private final GroupNameCacheInitializer groupNameCacheInitializer;
   private final ConfigurationHelper  configuration;
   private final CacheStrategyFactory cacheStrategyFactory;
   private final InjectorInitializer  injectorInitializer;
 
   public ResourceUriCacheInitializer(
+    final ServletContext servletContext,
     final GroupNameCacheInitializer nameCacheInitializer,
     final ConfigurationHelper configuration,
     final CacheStrategyFactory cacheStrategyFactory,
     final InjectorInitializer injectorInitializer
   ) {
+    this.servletContext = servletContext;
     this.groupNameCacheInitializer = nameCacheInitializer;
     this.configuration = configuration;
     this.cacheStrategyFactory = cacheStrategyFactory;
@@ -56,19 +61,16 @@ public final class ResourceUriCacheInitializer extends LazyInitializer<ResourceU
   }
 
   private ConfigurableResourceUriStrategy createResourceUriStrategy() {
-    return injectWroDataInto(
-      new ConfigurableResourceUriStrategy(
-        createOptimizedResourceRootProvider(),
-        createVersionedGroupNameFactory(),
-        configuration
-      )
+    return new ConfigurableResourceUriStrategy(
+      createOptimizedResourceRootProvider(),
+      createVersionedGroupNameFactory(),
+      configuration,
+      servletContext.getContextPath()
     );
   }
 
   private DefaultOptimizedResourcesRootProvider createOptimizedResourceRootProvider() {
-    return injectWroDataInto(
-      new DefaultOptimizedResourcesRootProvider()
-    );
+    return new DefaultOptimizedResourcesRootProvider(servletContext);
   }
 
   private VersionedGroupNameFactory createVersionedGroupNameFactory() {

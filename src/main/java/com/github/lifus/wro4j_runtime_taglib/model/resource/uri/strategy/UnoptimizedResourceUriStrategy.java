@@ -24,6 +24,7 @@ import ro.isdc.wro.model.resource.ResourceType;
 import ro.isdc.wro.model.resource.locator.ServletContextUriLocator;
 import ro.isdc.wro.util.LazyInitializer;
 
+import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.OptimizedResourcesRootProvider;
 
 /**
@@ -38,6 +39,8 @@ public final class UnoptimizedResourceUriStrategy extends AbstractResourceUriStr
   @Inject
   private WroModelFactory modelFactory;
 
+  private final ConfigurationHelper configuration;
+
   private final LazyInitializer<String> proxyPrefixInitializer = new LazyInitializer<String>() {
     @Override
     protected String initialize() {
@@ -45,8 +48,9 @@ public final class UnoptimizedResourceUriStrategy extends AbstractResourceUriStr
     }
   };
 
-  public UnoptimizedResourceUriStrategy(final OptimizedResourcesRootProvider mappingStrategy) {
-    super(mappingStrategy);
+  public UnoptimizedResourceUriStrategy(final String contextPath, final ConfigurationHelper configurationHelper, final OptimizedResourcesRootProvider mappingStrategy) {
+    super(contextPath, mappingStrategy);
+    this.configuration = configurationHelper;
   }
 
   /**
@@ -74,7 +78,7 @@ public final class UnoptimizedResourceUriStrategy extends AbstractResourceUriStr
   private String[] handleEmptyResources(final String groupName, final ResourceType resourceType) {
     LOGGER.debug("No resources found in group: {} and resource type: {}", groupName, resourceType);
 
-    if (isIgnoreEmptyGroup()) {
+    if (configuration.isIgnoreEmptyGroup()) {
       return ArrayUtils.EMPTY_STRING_ARRAY;
     } else {
       throw new WroRuntimeException("No resources found in group: " + groupName);

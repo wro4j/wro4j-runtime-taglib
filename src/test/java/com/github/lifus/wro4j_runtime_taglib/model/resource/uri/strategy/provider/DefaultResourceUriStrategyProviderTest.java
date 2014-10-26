@@ -13,9 +13,12 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 
 import java.util.Map;
 
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.testng.PowerMockTestCase;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
 import com.github.lifus.wro4j_runtime_taglib.model.group.name.VersionedGroupNameFactory;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.OptimizedResourcesRootProvider;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy.ResourceUriStrategy;
@@ -25,13 +28,14 @@ import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy.Version
 /**
  * Test for {@link DefaultResourceUriStrategyProvider}.
  */
-public class DefaultResourceUriStrategyProviderTest {
+@PrepareForTest(ConfigurationHelper.class)
+public class DefaultResourceUriStrategyProviderTest extends PowerMockTestCase {
 
   private DefaultResourceUriStrategyProvider defaultResourceUriStrategyProvider;
 
   @BeforeMethod
   public void setUp() {
-    defaultResourceUriStrategyProvider = new DefaultResourceUriStrategyProvider(mock(OptimizedResourcesRootProvider.class), mock(VersionedGroupNameFactory.class));
+    defaultResourceUriStrategyProvider = new DefaultResourceUriStrategyProvider(mock(String.class), mock(ConfigurationHelper.class), mock(OptimizedResourcesRootProvider.class), mock(VersionedGroupNameFactory.class));
   }
 
   @Test

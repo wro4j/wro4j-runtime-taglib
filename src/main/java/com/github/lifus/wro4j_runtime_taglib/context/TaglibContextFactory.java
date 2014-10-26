@@ -41,7 +41,7 @@ public final class TaglibContextFactory {
     final CacheStrategyFactory cacheStrategyFactory = new ConfigurableCacheStrategyFactory(configuration);
 
     final GroupNameCacheInitializer groupNameCacheInitializer = new GroupNameCacheInitializer(cacheStrategyFactory);
-    final ResourceUriCacheInitializer resourceUriCacheInitializer = new ResourceUriCacheInitializer(groupNameCacheInitializer, configuration, cacheStrategyFactory, injectorInitializer);
+    final ResourceUriCacheInitializer resourceUriCacheInitializer = new ResourceUriCacheInitializer(servletContext, groupNameCacheInitializer, configuration, cacheStrategyFactory, injectorInitializer);
 
     // TODO: it's a side-effect. consider to move it elsewhere.
     managerFactory = new WroTaglibManagerFactoryDecorator(managerFactory, groupNameCacheInitializer, resourceUriCacheInitializer, injectorInitializer);

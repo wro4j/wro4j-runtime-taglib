@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.mockito.Mock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.testng.PowerMockTestCase;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -34,6 +35,7 @@ import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy.provide
 /**
  * Tests for {@link ConfigurableResourceUriStrategy}.
  */
+@PrepareForTest(ConfigurationHelper.class)
 public class ConfigurableResourceUriStrategyTest extends PowerMockTestCase {
 
   private static final String NAME = "name";
@@ -46,7 +48,7 @@ public class ConfigurableResourceUriStrategyTest extends PowerMockTestCase {
 
   @BeforeMethod
   public void setUp() {
-    configurableResourceUriStrategy = new ConfigurableResourceUriStrategy(mock(OptimizedResourcesRootProvider.class), mock(VersionedGroupNameFactory.class), configurationHelper);
+    configurableResourceUriStrategy = new ConfigurableResourceUriStrategy(mock(OptimizedResourcesRootProvider.class), mock(VersionedGroupNameFactory.class), configurationHelper, mock(String.class));
   }
 
   @Test

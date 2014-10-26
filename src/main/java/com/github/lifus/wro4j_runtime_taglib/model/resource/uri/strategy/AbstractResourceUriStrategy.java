@@ -4,10 +4,6 @@
  */
 package com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy;
 
-import javax.servlet.ServletContext;
-
-import ro.isdc.wro.config.ReadOnlyContext;
-import ro.isdc.wro.model.group.Inject;
 import ro.isdc.wro.util.LazyInitializer;
 
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.OptimizedResourcesRootProvider;
@@ -17,18 +13,10 @@ import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.OptimizedRe
  */
 public abstract class AbstractResourceUriStrategy implements ResourceUriStrategy {
 
-  @Inject
-  private ReadOnlyContext context;
+  private final String contextPath;
 
   private final OptimizedResourcesRootProvider optimizedResourcesRootProvider;
 
-  private final LazyInitializer<String> contextPathInitializer = new LazyInitializer<String>() {
-    @Override
-    protected String initialize() {
-      final ServletContext servletContext = context.getServletContext();
-      return servletContext.getContextPath();
-    }
-  };
   private final LazyInitializer<String> wroRootInitializer = new LazyInitializer<String>() {
     @Override
     protected String initialize() {
@@ -36,7 +24,8 @@ public abstract class AbstractResourceUriStrategy implements ResourceUriStrategy
     }
   };
 
-  protected AbstractResourceUriStrategy(final OptimizedResourcesRootProvider optimizedResourcesRootProvider) {
+  protected AbstractResourceUriStrategy(final String contextPath, final OptimizedResourcesRootProvider optimizedResourcesRootProvider) {
+    this.contextPath = contextPath;
     this.optimizedResourcesRootProvider = optimizedResourcesRootProvider;
   }
 
@@ -44,7 +33,7 @@ public abstract class AbstractResourceUriStrategy implements ResourceUriStrategy
    * @return context path of current servlet.
    */
   protected String getContextPath() {
-    return contextPathInitializer.get();
+    return contextPath;
   }
 
   /**
@@ -52,13 +41,6 @@ public abstract class AbstractResourceUriStrategy implements ResourceUriStrategy
    */
   protected String getWroRoot() {
     return wroRootInitializer.get();
-  }
-
-  /**
-   * @return true if empty groups are allowed.
-   */
-  protected boolean isIgnoreEmptyGroup() {
-    return context.getConfig().isIgnoreEmptyGroup();
   }
 
 }
