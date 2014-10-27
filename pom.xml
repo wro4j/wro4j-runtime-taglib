@@ -3,7 +3,7 @@
 
   <groupId>com.github.lifus</groupId>
   <artifactId>wro4j-runtime-taglib</artifactId>
-  <version>0.1.2-SNAPSHOT</version>
+  <version>0.1.2</version>
   <packaging>jar</packaging>
 
   <name>runtime tag library for wro4j</name>
@@ -20,7 +20,7 @@
     <connection>scm:git:https://github.com/lifus/wro4j-runtime-taglib.git</connection>
     <developerConnection>scm:git:git@github.com:lifus/wro4j-runtime-taglib.git</developerConnection>
     <url>http://github.com/lifus/wro4j-runtime-taglib.git</url>
-    <tag>HEAD</tag>
+    <tag>v0.1.2</tag>
   </scm>
   <developers>
     <developer>
