@@ -18,7 +18,7 @@
 
 * Java 7 or higher.
 
-* [Java Servlet 3.0 API][2] or higher.
+* [Java Servlet 3.0 Container][2], or newer.
 
 * [Wro4j][3] 1.7.x.
 
