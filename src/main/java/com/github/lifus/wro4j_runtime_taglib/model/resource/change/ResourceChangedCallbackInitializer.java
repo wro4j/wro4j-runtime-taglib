@@ -4,9 +4,9 @@
  */
 package com.github.lifus.wro4j_runtime_taglib.model.resource.change;
 
+import ro.isdc.wro.manager.factory.WroManagerFactory;
 import ro.isdc.wro.util.LazyInitializer;
 
-import com.github.lifus.wro4j_runtime_taglib.manager.InjectorInitializer;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.cache.ResourceUriCacheInitializer;
 
 /**
@@ -14,15 +14,15 @@ import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.cache.ResourceUr
  */
 public final class ResourceChangedCallbackInitializer extends LazyInitializer<ResourceChangedCallback> {
 
+  private final WroManagerFactory wroManagerFactory;
   private final ResourceUriCacheInitializer resourceUriCacheInitializer;
-  private final InjectorInitializer injectorInitializer;
 
   public ResourceChangedCallbackInitializer(
-    final ResourceUriCacheInitializer resourceUriCacheInitializer,
-    final InjectorInitializer injectorInitializer
+    final WroManagerFactory wroManagerFactory,
+    final ResourceUriCacheInitializer resourceUriCacheInitializer
   ) {
+    this.wroManagerFactory = wroManagerFactory;
     this.resourceUriCacheInitializer = resourceUriCacheInitializer;
-    this.injectorInitializer = injectorInitializer;
   }
 
   /**
@@ -34,12 +34,7 @@ public final class ResourceChangedCallbackInitializer extends LazyInitializer<Re
   }
 
   private ResourceChangedCallback newResourceChangedCallback() {
-    return injectWroDataInto(
-      new ResourceChangedCallback(resourceUriCacheInitializer.get()));
-  }
-  
-  private <T> T injectWroDataInto(T target) {
-    return injectorInitializer.get().inject(target);
+    return new ResourceChangedCallback(wroManagerFactory, resourceUriCacheInitializer.get());
   }
 
 }

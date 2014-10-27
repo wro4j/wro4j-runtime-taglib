@@ -19,17 +19,16 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import ro.isdc.wro.cache.CacheStrategy;
-import ro.isdc.wro.model.group.processor.Injector;
+import ro.isdc.wro.manager.factory.WroManagerFactory;
 
 import com.github.lifus.wro4j_runtime_taglib.cache.CacheStrategyFactory;
 import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
-import com.github.lifus.wro4j_runtime_taglib.manager.InjectorInitializer;
 import com.github.lifus.wro4j_runtime_taglib.model.group.name.cache.GroupNameCacheInitializer;
 
 /**
  * Tests for {@link ResourceUriCacheInitializer}.
  */
-@PrepareForTest({Injector.class, InjectorInitializer.class, GroupNameCacheInitializer.class, ConfigurationHelper.class})
+@PrepareForTest({GroupNameCacheInitializer.class, ConfigurationHelper.class})
 public class ResourceUriCacheInitializerTest extends PowerMockTestCase {
 
   private ResourceUriCacheInitializer resourceUriCacheInitializer;
@@ -38,18 +37,15 @@ public class ResourceUriCacheInitializerTest extends PowerMockTestCase {
   private ServletContext servletContext;
   @Mock
   private CacheStrategyFactory cacheStrategyFactory;
-  @Mock
-  private InjectorInitializer injectorInitializer;
 
   @BeforeMethod
   public void setUp() {
-    resourceUriCacheInitializer = new ResourceUriCacheInitializer(servletContext, mock(GroupNameCacheInitializer.class), mock(ConfigurationHelper.class), cacheStrategyFactory, injectorInitializer);
+    resourceUriCacheInitializer = new ResourceUriCacheInitializer(servletContext, mock(WroManagerFactory.class), mock(GroupNameCacheInitializer.class), mock(ConfigurationHelper.class), cacheStrategyFactory);
   }
 
   @Test
   public void shouleCreateResourceUriCache() {
     givenServletContext();
-    givenInjectorHasBeenInitialized();
     givenCacheStrategyHasBeenConfigured();
 
     thenShouldInitializeResourceUriCache();
@@ -57,10 +53,6 @@ public class ResourceUriCacheInitializerTest extends PowerMockTestCase {
 
   private void givenServletContext() {
     when(servletContext.getContextPath()).thenReturn(mock(String.class));
-  }
-
-  private void givenInjectorHasBeenInitialized() {
-    when(injectorInitializer.get()).thenReturn(mock(Injector.class));
   }
 
   @SuppressWarnings("unchecked")

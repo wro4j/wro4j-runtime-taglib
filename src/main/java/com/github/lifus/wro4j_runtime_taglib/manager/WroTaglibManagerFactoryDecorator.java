@@ -28,12 +28,11 @@ public final class WroTaglibManagerFactoryDecorator extends WroManagerFactoryDec
   public WroTaglibManagerFactoryDecorator(
     final WroManagerFactory wroManagerFactory,
     final GroupNameCacheInitializer nameCacheInitializer,
-    final ResourceUriCacheInitializer resourceUriCacheInitializer,
-    final InjectorInitializer injectorInitializer
+    final ResourceUriCacheInitializer resourceUriCacheInitializer
   ) {
     super(wroManagerFactory);
     this.groupNameCacheInitializer = nameCacheInitializer;
-    this.resourceChangedCallbackInitializer = new ResourceChangedCallbackInitializer(resourceUriCacheInitializer, injectorInitializer);
+    this.resourceChangedCallbackInitializer = new ResourceChangedCallbackInitializer(wroManagerFactory, resourceUriCacheInitializer);
   }
 
   /**

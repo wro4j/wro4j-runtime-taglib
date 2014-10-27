@@ -8,7 +8,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayContaining;
 import static org.hamcrest.Matchers.emptyArray;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
@@ -22,19 +21,21 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
-
 import ro.isdc.wro.WroRuntimeException;
 import ro.isdc.wro.config.jmx.WroConfiguration;
+import ro.isdc.wro.manager.WroManager;
+import ro.isdc.wro.manager.factory.WroManagerFactory;
 import ro.isdc.wro.model.WroModel;
 import ro.isdc.wro.model.factory.WroModelFactory;
 import ro.isdc.wro.model.group.Group;
 import ro.isdc.wro.model.resource.Resource;
 
+import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
+
 /**
  * Tests for {@link UnoptimizedResourceUriStrategy}.
  */
-@PrepareForTest({WroModel.class, Group.class, WroConfiguration.class, ConfigurationHelper.class})
+@PrepareForTest({WroManager.class, WroModel.class, Group.class, WroConfiguration.class, ConfigurationHelper.class})
 public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestBase {
 
   private static final String URI = "uri";
@@ -47,6 +48,8 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
   private UnoptimizedResourceUriStrategy unoptimizedResourceUriStrategy;
 
   @Mock
+  private WroManagerFactory wroManagerFactory;
+  @Mock
   private WroModel wroModel;
   @Mock
   private ConfigurationHelper configurationHelper;
@@ -58,19 +61,19 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
 
   @BeforeMethod
   public void setUp() {
-    unoptimizedResourceUriStrategy = new UnoptimizedResourceUriStrategy(CONTEXT_PATH, configurationHelper, getOptimizedResourcesRootProvider());
+    unoptimizedResourceUriStrategy = new UnoptimizedResourceUriStrategy(CONTEXT_PATH, wroManagerFactory, configurationHelper, getOptimizedResourcesRootProvider());
   }
 
   @Test(expectedExceptions=WroRuntimeException.class)
   public void shouldThrowExceptionIfThereIsNoSuchGroup() {
-    givenModelFactoryInjected();
+    givenWroManagerFactoryIsCorrect();
 
     whenGetResourceUris();
   }
 
   @Test(expectedExceptions=WroRuntimeException.class)
   public void shouldThrowExceptionIfUriIsInvalid() {
-    givenModelFactoryInjected();
+    givenWroManagerFactoryIsCorrect();
     givenModelContains(group(withResource(INVALID_URI)));
 
     whenGetResourceUris();
@@ -78,7 +81,7 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
 
   @Test(expectedExceptions=WroRuntimeException.class)
   public void shouldThrowExceptionIfThereIsNoSuchResourceAndIgnoreEmptyGroupIsFalse() {
-    givenModelFactoryInjected();
+    givenWroManagerFactoryIsCorrect();
     givenModelContains(group(withoutResources()));
     givenIgnoreEmptyGroupIs(false);
 
@@ -87,7 +90,7 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
 
   @Test
   public void shouldReturnEmptyArrayIfThereIsNoSuchResource() {
-    givenModelFactoryInjected();
+    givenWroManagerFactoryIsCorrect();
     givenModelContains(group(withoutResources()));
     givenIgnoreEmptyGroupIs(true);
 
@@ -96,7 +99,7 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
 
   @Test
   public void shouldReturnLocalUriIfThereIsSuchResource() {
-    givenModelFactoryInjected();
+    givenWroManagerFactoryIsCorrect();
     givenModelContains(group(withResource(URI)));
     givenContextPathHasBeenSetUp();
 
@@ -105,7 +108,7 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
 
   @Test
   public void shouldReturnProtectedUriIfThereIsSuchResource() {
-    givenModelFactoryInjected();
+    givenWroManagerFactoryIsCorrect();
     givenModelContains(group(withResource(PROTECTED_URI)));
     givenContextPathHasBeenSetUp();
     givenWroRootHasBeenSetUp();
@@ -115,16 +118,18 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
 
   @Test
   public void shouldReturnAbsoluteUriIfThereIsSuchResource() {
-    givenModelFactoryInjected();
+    givenWroManagerFactoryIsCorrect();
     givenModelContains(group(withResource(ABSOLUTE_URI)));
     givenContextPathHasBeenSetUp();
 
     assertThat(whenGetResourceUris(), is(arrayContaining(ABSOLUTE_URI)));
   }
 
-  private void givenModelFactoryInjected() {
+  private void givenWroManagerFactoryIsCorrect() {
+    final WroManager wroManager = mock(WroManager.class);
+    when(wroManagerFactory.create()).thenReturn(wroManager);
     final WroModelFactory wroModelFactory = mock(WroModelFactory.class);
-    setInternalState(unoptimizedResourceUriStrategy, "modelFactory", wroModelFactory);
+    when(wroManager.getModelFactory()).thenReturn(wroModelFactory);
     when(wroModelFactory.create()).thenReturn(wroModel);
   }
 

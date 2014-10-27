@@ -17,7 +17,6 @@ import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy.Resourc
 public final class ResourceUriCacheStrategyDecorator extends AbstractSynchronizedCacheStrategyDecorator<TaglibCacheKey, String[]>
                                                      implements ResourceUriCache {
 
-  // I wish I could inject this but the only constructor for Injector is a package private constructor
   private final ResourceUriStrategy groupPathsStrategy;
 
   public ResourceUriCacheStrategyDecorator(

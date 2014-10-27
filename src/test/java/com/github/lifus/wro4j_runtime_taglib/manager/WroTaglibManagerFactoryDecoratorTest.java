@@ -28,7 +28,7 @@ import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.cache.ResourceUr
 /**
  * Tests for {@link WroTaglibManagerFactoryDecorator}.
  */
-@PrepareForTest(WroManager.class)
+@PrepareForTest({WroManager.class, GroupNameCacheInitializer.class, ResourceUriCacheInitializer.class})
 public class WroTaglibManagerFactoryDecoratorTest extends PowerMockTestCase {
 
   private WroTaglibManagerFactoryDecorator decorator;
@@ -42,7 +42,7 @@ public class WroTaglibManagerFactoryDecoratorTest extends PowerMockTestCase {
 
   @BeforeMethod
   public void setUp() throws Exception {
-    decorator = new WroTaglibManagerFactoryDecorator(wroManagerFactory, mock(GroupNameCacheInitializer.class), mock(ResourceUriCacheInitializer.class), mock(InjectorInitializer.class));
+    decorator = new WroTaglibManagerFactoryDecorator(wroManagerFactory, mock(GroupNameCacheInitializer.class), mock(ResourceUriCacheInitializer.class));
   }
 
   @Test

@@ -24,6 +24,7 @@ import org.powermock.modules.testng.PowerMockTestCase;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import ro.isdc.wro.manager.factory.WroManagerFactory;
 import ro.isdc.wro.model.resource.ResourceType;
 import ro.isdc.wro.util.LazyInitializer;
 
@@ -48,7 +49,7 @@ public class ConfigurableResourceUriStrategyTest extends PowerMockTestCase {
 
   @BeforeMethod
   public void setUp() {
-    configurableResourceUriStrategy = new ConfigurableResourceUriStrategy(mock(OptimizedResourcesRootProvider.class), mock(VersionedGroupNameFactory.class), configurationHelper, mock(String.class));
+    configurableResourceUriStrategy = new ConfigurableResourceUriStrategy(mock(WroManagerFactory.class), mock(OptimizedResourcesRootProvider.class), mock(VersionedGroupNameFactory.class), configurationHelper, mock(String.class));
   }
 
   @Test

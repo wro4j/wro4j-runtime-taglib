@@ -7,9 +7,8 @@ package com.github.lifus.wro4j_runtime_taglib.model.resource.change;
 import java.util.Collection;
 
 import ro.isdc.wro.manager.callback.LifecycleCallbackSupport;
+import ro.isdc.wro.manager.factory.WroManagerFactory;
 import ro.isdc.wro.model.WroModelInspector;
-import ro.isdc.wro.model.factory.WroModelFactory;
-import ro.isdc.wro.model.group.Inject;
 import ro.isdc.wro.model.resource.Resource;
 import ro.isdc.wro.model.resource.ResourceType;
 
@@ -23,12 +22,12 @@ public final class ResourceChangedCallback extends LifecycleCallbackSupport {
 
   private static final String[] NO_VALUE = null;
 
-  @Inject
-  private WroModelFactory wroModelFactory;
+  private final WroManagerFactory wroManagerFactory;
 
   private final ResourceUriCache resourceUriCache;
 
-  public ResourceChangedCallback(final ResourceUriCache resourceUriCache) {
+  public ResourceChangedCallback(final WroManagerFactory wroManagerFactory, final ResourceUriCache resourceUriCache) {
+    this.wroManagerFactory = wroManagerFactory;
     this.resourceUriCache = resourceUriCache;
   }
 
@@ -50,7 +49,7 @@ public final class ResourceChangedCallback extends LifecycleCallbackSupport {
 
   private Collection<String> getGroupNames(final Resource resource) {
     final String uri = resource.getUri();
-    final WroModelInspector wroModelInspector = new WroModelInspector(wroModelFactory.create());
+    final WroModelInspector wroModelInspector = new WroModelInspector(wroManagerFactory.create().getModelFactory().create());
     return wroModelInspector.getGroupNamesContainingResource(uri);
   }
 

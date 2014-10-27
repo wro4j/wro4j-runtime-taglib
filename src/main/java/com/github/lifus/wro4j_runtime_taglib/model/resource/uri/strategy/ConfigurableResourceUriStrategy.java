@@ -7,6 +7,7 @@ package com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy;
 import java.util.Map;
 import java.util.Properties;
 
+import ro.isdc.wro.manager.factory.WroManagerFactory;
 import ro.isdc.wro.model.resource.ResourceType;
 import ro.isdc.wro.model.resource.support.AbstractConfigurableSingleStrategy;
 
@@ -24,18 +25,21 @@ public final class ConfigurableResourceUriStrategy extends AbstractConfigurableS
 
   public static final String KEY = "resourceUriStrategy";
 
+  private final WroManagerFactory wroManagerFactory;
   private final OptimizedResourcesRootProvider optimizedResourcesRootProvider;
   private final VersionedGroupNameFactory versionedGroupNameFactory;
   private final ConfigurationHelper configuration;
   private final String contextPath;
 
   public ConfigurableResourceUriStrategy(
+    final WroManagerFactory wroManagerFactory,
     final OptimizedResourcesRootProvider optimizedResourcesRootProvider,
     final VersionedGroupNameFactory versionedGroupNameFactory,
     final ConfigurationHelper configuration,
     final String contextPath
   ) {
 
+    this.wroManagerFactory = wroManagerFactory;
     this.optimizedResourcesRootProvider = optimizedResourcesRootProvider;
     this.versionedGroupNameFactory = versionedGroupNameFactory;
     this.configuration = configuration;
@@ -89,6 +93,7 @@ public final class ConfigurableResourceUriStrategy extends AbstractConfigurableS
   protected void overrideDefaultStrategyMap(final Map<String, ResourceUriStrategy> map) {
     final DefaultResourceUriStrategyProvider strategyProvider = new DefaultResourceUriStrategyProvider(
       contextPath,
+      wroManagerFactory,
       configuration,
       optimizedResourcesRootProvider,
       versionedGroupNameFactory

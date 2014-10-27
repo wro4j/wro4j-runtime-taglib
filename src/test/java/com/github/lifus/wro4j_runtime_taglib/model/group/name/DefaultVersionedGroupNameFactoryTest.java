@@ -10,7 +10,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
+import static org.powermock.api.mockito.PowerMockito.mock;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +22,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import ro.isdc.wro.cache.CacheKey;
-import ro.isdc.wro.model.group.processor.GroupsProcessor;
+import ro.isdc.wro.cache.CacheStrategy;
+import ro.isdc.wro.cache.CacheValue;
+import ro.isdc.wro.manager.WroManager;
+import ro.isdc.wro.manager.factory.WroManagerFactory;
 import ro.isdc.wro.model.resource.ResourceType;
 import ro.isdc.wro.model.resource.support.naming.NamingStrategy;
 
@@ -31,7 +34,7 @@ import com.github.lifus.wro4j_runtime_taglib.model.group.name.callback.Versioned
 /**
  * Tests for {@link DefaultVersionedGroupNameFactory}
  */
-@PrepareForTest({VersionedGroupNameCallbackRegistry.class})
+@PrepareForTest({WroManager.class, CacheValue.class, VersionedGroupNameCallbackRegistry.class})
 public class DefaultVersionedGroupNameFactoryTest extends PowerMockTestCase {
 
   private static final String NAME = "name";
@@ -40,7 +43,9 @@ public class DefaultVersionedGroupNameFactoryTest extends PowerMockTestCase {
   private DefaultVersionedGroupNameFactory defaultVersionedGroupNameFactory;
 
   @Mock
-  private GroupsProcessor groupsProcessor;
+  private WroManagerFactory wroManagerFactory;
+  @Mock
+  private CacheStrategy<CacheKey, CacheValue> cacheStrategy;
   @Mock
   private NamingStrategy namingStrategy;
   @Mock
@@ -49,12 +54,12 @@ public class DefaultVersionedGroupNameFactoryTest extends PowerMockTestCase {
 
   @BeforeMethod
   public void setUp() {
-    defaultVersionedGroupNameFactory = new DefaultVersionedGroupNameFactory(listeners);
+    defaultVersionedGroupNameFactory = new DefaultVersionedGroupNameFactory(wroManagerFactory, listeners);
   }
 
   @Test(expectedExceptions=RuntimeException.class)
   public void shouldThrowRuntimeExceptionInCaseOfIoException() throws IOException {
-    givenRequiredDataHasBeenInjected();
+    givenWroManagerFactoryIsValid();
 
     whenThrowsIoException();
     whenCreatingVesrionedName();
@@ -62,14 +67,14 @@ public class DefaultVersionedGroupNameFactoryTest extends PowerMockTestCase {
 
   @SuppressWarnings("unchecked")
   private void whenThrowsIoException() throws IOException {
-    when(groupsProcessor.process(any(CacheKey.class))).thenReturn("processed content");
+    givenCacheValueExists();
     when(namingStrategy.rename(eq(NAME), any(InputStream.class))).thenThrow(IOException.class);
   }
 
   @Test
   public void shouldCreateVersionedNameAndNotifyListeners() throws IOException {
     final String versionedName = "versioned name";
-    givenRequiredDataHasBeenInjected();
+    givenWroManagerFactoryIsValid();
     givenResultingVersionedName(versionedName);
 
     whenCreatingVesrionedName();
@@ -77,14 +82,22 @@ public class DefaultVersionedGroupNameFactoryTest extends PowerMockTestCase {
     thenCreateVersionedNameAndNotifyListeners(versionedName);
   }
 
-  private void givenRequiredDataHasBeenInjected() {
-    setInternalState(defaultVersionedGroupNameFactory, "groupsProcessor", groupsProcessor);
-    setInternalState(defaultVersionedGroupNameFactory, "namingStrategy", namingStrategy);
+  private void givenWroManagerFactoryIsValid() {
+    final WroManager wroManager = mock(WroManager.class);
+    when(wroManagerFactory.create()).thenReturn(wroManager);
+    when(wroManager.getNamingStrategy()).thenReturn(namingStrategy);
+    when(wroManager.getCacheStrategy()).thenReturn(cacheStrategy);
   }
 
   private void givenResultingVersionedName(final String versionedName) throws IOException {
-    when(groupsProcessor.process(any(CacheKey.class))).thenReturn("processed content");
+    givenCacheValueExists();
     when(namingStrategy.rename(eq(NAME), any(InputStream.class))).thenReturn(versionedName);
+  }
+
+  private void givenCacheValueExists() {
+    final CacheValue cacheValue = mock(CacheValue.class);
+    when(cacheStrategy.get(any(CacheKey.class))).thenReturn(cacheValue);
+    when(cacheValue.getRawContent()).thenReturn("processed content");
   }
 
   private void whenCreatingVesrionedName() {

@@ -8,7 +8,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
@@ -22,6 +21,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import ro.isdc.wro.manager.WroManager;
+import ro.isdc.wro.manager.factory.WroManagerFactory;
 import ro.isdc.wro.model.WroModel;
 import ro.isdc.wro.model.factory.WroModelFactory;
 import ro.isdc.wro.model.group.Group;
@@ -34,7 +35,7 @@ import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.cache.ResourceUr
 /**
  * Test for {@link ResourceChangedCallback}.
  */
-@PrepareForTest({Group.class, WroModel.class})
+@PrepareForTest({Group.class, WroManager.class, WroModel.class})
 public class ResourceChangedCallbackTest extends PowerMockTestCase {
 
   private static final ResourceType TYPE = ResourceType.values()[0];
@@ -44,13 +45,15 @@ public class ResourceChangedCallbackTest extends PowerMockTestCase {
   private ResourceChangedCallback resourceChangedCallback;
 
   @Mock
+  private WroManagerFactory wroManagerFactory;
+  @Mock
   private ResourceUriCache pathCache;
   @Mock
   private WroModel wroModel;
 
   @BeforeMethod
   public void setUp() {
-    resourceChangedCallback = new ResourceChangedCallback(pathCache);
+    resourceChangedCallback = new ResourceChangedCallback(wroManagerFactory, pathCache);
   }
 
   @DataProvider(name="groups")
@@ -78,7 +81,7 @@ public class ResourceChangedCallbackTest extends PowerMockTestCase {
 
   @Test(dataProvider="groups")
   public void shouldResetCache(final Collection<Group> groups) {
-    givenModelFactoryInjected();
+    givenWroManagerIsCorrect();
     givenGroupsAreRegistered(groups);
 
     whenResourceChanged();
@@ -86,9 +89,11 @@ public class ResourceChangedCallbackTest extends PowerMockTestCase {
     thenShouldClearExactly(groups.size());
   }
 
-  private void givenModelFactoryInjected() {
+  private void givenWroManagerIsCorrect() {
+    final WroManager wroManager = mock(WroManager.class);
+    when(wroManagerFactory.create()).thenReturn(wroManager);
     final WroModelFactory wroModelFactory = mock(WroModelFactory.class);
-    setInternalState(resourceChangedCallback, "modelFactory", wroModelFactory);
+    when(wroManager.getModelFactory()).thenReturn(wroModelFactory);
     when(wroModelFactory.create()).thenReturn(wroModel);
   }
 
