@@ -21,7 +21,7 @@ import ro.isdc.wro.http.WroFilter;
  */
 public final class DefaultOptimizedResourcesRootProvider extends AbstractOptimizedResourcesRootProvider {
 
-  protected static final String FILTER_CLASS_NAME = WroFilter.class.getCanonicalName();
+  private static final Class<WroFilter> WRO_FILTER_CLASS = WroFilter.class;
 
   private final ServletContext servletContext;
 
@@ -35,16 +35,26 @@ public final class DefaultOptimizedResourcesRootProvider extends AbstractOptimiz
   @Override
   protected String findOutRoot() {
     for (final FilterRegistration filterRegistration : getFilterRegistrations()) {
-      if (FILTER_CLASS_NAME.equals(filterRegistration.getClassName())) {
+      if (isWroFilterRegistration(filterRegistration)) {
         return retrieveRoot(filterRegistration);
       }
     }
-    throw new WroRuntimeException(String.format("%s is not registered in web.xml.", FILTER_CLASS_NAME));
+    throw new WroRuntimeException(String.format("There is no filter assignable to %s found in web.xml.", WRO_FILTER_CLASS.getCanonicalName()));
   }
 
   private Collection<? extends FilterRegistration> getFilterRegistrations() {
     final Map<String, ? extends FilterRegistration> filterRegistrations = servletContext.getFilterRegistrations();
     return filterRegistrations.values();
+  }
+
+  private boolean isWroFilterRegistration(final FilterRegistration filterRegistration) {
+    try {
+      final String filterClassName = filterRegistration.getClassName();
+      final Class<?> filterClass = Class.forName(filterClassName);
+      return WRO_FILTER_CLASS.isAssignableFrom(filterClass);
+    } catch (ClassNotFoundException e) {
+      throw new WroRuntimeException("Invalid filter registration", e);
+    }
   }
 
   private String retrieveRoot(final FilterRegistration filterRegistration) {
