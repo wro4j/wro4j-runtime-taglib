@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/lifus/wro4j-runtime-taglib.svg?branch=master)](https://travis-ci.org/lifus/wro4j-runtime-taglib)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.lifus/wro4j-runtime-taglib/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.lifus/wro4j-runtime-taglib/badge.svg)
 
 # Features
 
