@@ -22,7 +22,7 @@ import ro.isdc.wro.manager.factory.WroManagerFactory;
 
 import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
 import com.github.lifus.wro4j_runtime_taglib.model.group.name.VersionedGroupNameFactory;
-import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.OptimizedResourcesRootProvider;
+import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.OptimizedResourcesRootStrategy;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy.ResourceUriStrategy;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy.UnoptimizedResourceUriStrategy;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy.VersionedResourceUriStrategy;
@@ -37,7 +37,7 @@ public class DefaultResourceUriStrategyProviderTest extends PowerMockTestCase {
 
   @BeforeMethod
   public void setUp() {
-    defaultResourceUriStrategyProvider = new DefaultResourceUriStrategyProvider(mock(String.class), mock(WroManagerFactory.class), mock(ConfigurationHelper.class), mock(OptimizedResourcesRootProvider.class), mock(VersionedGroupNameFactory.class));
+    defaultResourceUriStrategyProvider = new DefaultResourceUriStrategyProvider(mock(String.class), mock(WroManagerFactory.class), mock(ConfigurationHelper.class), mock(OptimizedResourcesRootStrategy.class), mock(VersionedGroupNameFactory.class));
   }
 
   @Test

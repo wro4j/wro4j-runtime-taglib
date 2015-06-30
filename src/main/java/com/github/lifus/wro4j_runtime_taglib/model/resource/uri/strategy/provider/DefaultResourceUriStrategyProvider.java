@@ -11,7 +11,7 @@ import ro.isdc.wro.manager.factory.WroManagerFactory;
 
 import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
 import com.github.lifus.wro4j_runtime_taglib.model.group.name.VersionedGroupNameFactory;
-import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.OptimizedResourcesRootProvider;
+import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.OptimizedResourcesRootStrategy;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy.ResourceUriStrategy;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy.UnoptimizedResourceUriStrategy;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy.VersionedResourceUriStrategy;
@@ -26,21 +26,21 @@ public final class DefaultResourceUriStrategyProvider implements ResourceUriStra
   private final String contextPath;
   private final WroManagerFactory wroManagerFactory;
   private final ConfigurationHelper configuration;
-  private final OptimizedResourcesRootProvider optimizedResourcesRootProvider;
+  private final OptimizedResourcesRootStrategy optimizedResourcesRootStrategy;
   private final VersionedGroupNameFactory versionedGroupNameFactory;
 
   public DefaultResourceUriStrategyProvider(
     final String contextPath,
     final WroManagerFactory wroManagerFactory,
     final ConfigurationHelper configuration,
-    final OptimizedResourcesRootProvider optimizedResourcesRootProvider,
+    final OptimizedResourcesRootStrategy optimizedResourcesRootStrategy,
     final VersionedGroupNameFactory versionedGroupNameFactory
   ) {
 
     this.contextPath = contextPath;
     this.wroManagerFactory = wroManagerFactory;
     this.configuration = configuration;
-    this.optimizedResourcesRootProvider = optimizedResourcesRootProvider;
+    this.optimizedResourcesRootStrategy = optimizedResourcesRootStrategy;
     this.versionedGroupNameFactory = versionedGroupNameFactory;
   }
 
@@ -52,11 +52,11 @@ public final class DefaultResourceUriStrategyProvider implements ResourceUriStra
     final HashMap<String, ResourceUriStrategy> map = new HashMap<>();
     map.put(
       VersionedResourceUriStrategy.ALIAS,
-      new VersionedResourceUriStrategy(contextPath, optimizedResourcesRootProvider, versionedGroupNameFactory)
+      new VersionedResourceUriStrategy(contextPath, optimizedResourcesRootStrategy, versionedGroupNameFactory)
     );
     map.put(
       UnoptimizedResourceUriStrategy.ALIAS,
-      new UnoptimizedResourceUriStrategy(contextPath, wroManagerFactory, configuration, optimizedResourcesRootProvider)
+      new UnoptimizedResourceUriStrategy(contextPath, wroManagerFactory, configuration, optimizedResourcesRootStrategy)
     );
     return map;
   }

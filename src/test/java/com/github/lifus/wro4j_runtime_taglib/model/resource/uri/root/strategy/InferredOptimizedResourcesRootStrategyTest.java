@@ -2,7 +2,7 @@
  * Copyright (c) 2014 Aleksei Polkanov. All rights reserved.
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-package com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root;
+package com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -28,22 +28,22 @@ import ro.isdc.wro.http.ConfigurableWroFilter;
 import ro.isdc.wro.http.WroFilter;
 
 /**
- * Tests for {@link DefaultOptimizedResourcesRootProvider}.
+ * Tests for {@link InferredOptimizedResourcesRootStrategy}.
  */
-public class DefaultMappingStrategyTest extends PowerMockTestCase {
+public class InferredOptimizedResourcesRootStrategyTest extends PowerMockTestCase {
 
   private static final String PATTERN = "/wro/*";
   private static final String NO_PATTERN = null;
   private static final String EXPECTED_ROOT = "/wro/";
 
-  private DefaultOptimizedResourcesRootProvider defaultOptimizedResourcesRootProvider;
+  private InferredOptimizedResourcesRootStrategy inferredOptimizedResourcesRootStrategy;
 
   @Mock
   private ServletContext servletContext;
 
   @BeforeMethod
   public void setUp() {
-    defaultOptimizedResourcesRootProvider = new DefaultOptimizedResourcesRootProvider(servletContext);
+    inferredOptimizedResourcesRootStrategy = new InferredOptimizedResourcesRootStrategy(servletContext);
   }
 
   @Test(expectedExceptions=WroRuntimeException.class, expectedExceptionsMessageRegExp="There is no filter assignable to [\\w\\.]+ found in web.xml.")
@@ -112,7 +112,7 @@ public class DefaultMappingStrategyTest extends PowerMockTestCase {
   }
 
   private String whenGettingRoot() {
-    return defaultOptimizedResourcesRootProvider.getRoot();
+    return inferredOptimizedResourcesRootStrategy.getRoot();
   }
 
 }

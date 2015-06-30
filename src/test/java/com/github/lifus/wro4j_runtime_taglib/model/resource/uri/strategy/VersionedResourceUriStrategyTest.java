@@ -35,7 +35,7 @@ public class VersionedResourceUriStrategyTest extends ResourceUriStrategyTestBas
 
   @BeforeMethod
   public void setUp() {
-    versionedResourceUriStrategy = new VersionedResourceUriStrategy(CONTEXT_PATH, getOptimizedResourcesRootProvider(), versionedGroupNameFactory);
+    versionedResourceUriStrategy = new VersionedResourceUriStrategy(CONTEXT_PATH, getOptimizedResourcesRootStrategy(), versionedGroupNameFactory);
   }
 
   @Test

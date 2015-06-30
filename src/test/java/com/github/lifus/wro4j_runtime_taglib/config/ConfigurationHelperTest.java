@@ -7,6 +7,7 @@ package com.github.lifus.wro4j_runtime_taglib.config;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 
@@ -38,6 +39,36 @@ public class ConfigurationHelperTest extends PowerMockTestCase {
   @BeforeMethod
   public void setUp() {
     configurationHelper = new ConfigurationHelper(servletContext);
+  }
+
+  @Test
+  public void shouldContainKeyFromWroProperties() {
+    givenPropertiesHasBeenSetUp();
+    givenPropertiesContain(KEY, VALUE);
+
+    assertThat(configurationHelper.containsKey(KEY), is(true));
+  }
+
+  @Test
+  public void shouldNotContainKeyThatIsntInWroProperties() {
+    givenPropertiesHasBeenSetUp();
+
+    assertThat(configurationHelper.containsKey(KEY), is(false));
+  }
+
+  @Test
+  public void shouldReturnKeyFromWroProperties() {
+    givenPropertiesHasBeenSetUp();
+    givenPropertiesContain(KEY, VALUE);
+
+    assertThat(configurationHelper.getProperty(KEY), is(VALUE));
+  }
+
+  @Test
+  public void shouldNotReturnKeyThatIsntInWroProperties() {
+    givenPropertiesHasBeenSetUp();
+
+    assertThat(configurationHelper.getProperty(KEY), is(nullValue()));
   }
 
   @Test

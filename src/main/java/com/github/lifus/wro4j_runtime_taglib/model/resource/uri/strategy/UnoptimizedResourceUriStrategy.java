@@ -25,7 +25,7 @@ import ro.isdc.wro.model.resource.locator.ServletContextUriLocator;
 import ro.isdc.wro.util.LazyInitializer;
 
 import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
-import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.OptimizedResourcesRootProvider;
+import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.OptimizedResourcesRootStrategy;
 
 /**
  * Returns URIs of unprocessed resources associated with given group name and resource type.
@@ -51,9 +51,9 @@ public final class UnoptimizedResourceUriStrategy extends AbstractResourceUriStr
     final String contextPath,
     final WroManagerFactory wroManagerFactory,
     final ConfigurationHelper configurationHelper,
-    final OptimizedResourcesRootProvider mappingStrategy
+    final OptimizedResourcesRootStrategy optimizedResourcesRootStrategy
   ) {
-    super(contextPath, mappingStrategy);
+    super(contextPath, optimizedResourcesRootStrategy);
     this.wroManagerFactory = wroManagerFactory;
     this.configuration = configurationHelper;
   }

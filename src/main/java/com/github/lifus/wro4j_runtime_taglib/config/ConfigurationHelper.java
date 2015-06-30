@@ -43,6 +43,30 @@ public final class ConfigurationHelper {
   }
 
   /**
+   * Checks if WRO configuration contains a key.
+   *
+   * @param key
+   *          possible key.
+   * @return true if WRO configuration contains key.
+   * @see Properties#containsKey(Object)
+   */
+  public boolean containsKey(final String key) {
+    return wroProperties.containsKey(key);
+  }
+
+  /**
+   * Returns value from WRO configuration.
+   *
+   * @param key
+   *          the property key.
+   * @return value from WRO configuration.
+   * @see Properties#getProperty(String)
+   */
+  public String getProperty(final String key) {
+    return wroProperties.getProperty(key);
+  }
+
+  /**
    * Instantiates {@link Properties} objects for a given key.
    * Enforces immutability of underlying WRO properties.
    *

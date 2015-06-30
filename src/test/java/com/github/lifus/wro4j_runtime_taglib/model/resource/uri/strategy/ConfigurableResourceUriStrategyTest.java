@@ -30,7 +30,7 @@ import ro.isdc.wro.util.LazyInitializer;
 
 import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
 import com.github.lifus.wro4j_runtime_taglib.model.group.name.VersionedGroupNameFactory;
-import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.OptimizedResourcesRootProvider;
+import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.OptimizedResourcesRootStrategy;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy.provider.ResourceUriStrategyProvider;
 
 /**
@@ -49,7 +49,7 @@ public class ConfigurableResourceUriStrategyTest extends PowerMockTestCase {
 
   @BeforeMethod
   public void setUp() {
-    configurableResourceUriStrategy = new ConfigurableResourceUriStrategy(mock(WroManagerFactory.class), mock(OptimizedResourcesRootProvider.class), mock(VersionedGroupNameFactory.class), configurationHelper, mock(String.class));
+    configurableResourceUriStrategy = new ConfigurableResourceUriStrategy(mock(WroManagerFactory.class), mock(OptimizedResourcesRootStrategy.class), mock(VersionedGroupNameFactory.class), configurationHelper, mock(String.class));
   }
 
   @Test

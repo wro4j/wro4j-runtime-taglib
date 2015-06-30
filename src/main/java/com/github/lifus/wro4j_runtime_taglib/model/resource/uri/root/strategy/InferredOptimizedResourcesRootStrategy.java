@@ -2,7 +2,7 @@
  * Copyright (c) 2014 Aleksei Polkanov. All rights reserved.
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-package com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root;
+package com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy;
 
 import java.util.Collection;
 import java.util.Map;
@@ -19,13 +19,14 @@ import ro.isdc.wro.http.WroFilter;
  *   Requires {@link ServletContext#getFilterRegistrations()} introduced in servlet 3.0.
  * </p>
  */
-public final class DefaultOptimizedResourcesRootProvider extends AbstractOptimizedResourcesRootProvider {
+public final class InferredOptimizedResourcesRootStrategy extends AbstractOptimizedResourcesRootStrategy {
+  public static final String ALIAS = "inferred";
 
   private static final Class<WroFilter> WRO_FILTER_CLASS = WroFilter.class;
 
   private final ServletContext servletContext;
 
-  public DefaultOptimizedResourcesRootProvider(final ServletContext servletContext) {
+  public InferredOptimizedResourcesRootStrategy(final ServletContext servletContext) {
     this.servletContext = servletContext;
   }
 

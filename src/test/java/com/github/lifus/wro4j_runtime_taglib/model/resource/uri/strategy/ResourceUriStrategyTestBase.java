@@ -13,7 +13,7 @@ import org.powermock.modules.testng.PowerMockTestCase;
 
 import ro.isdc.wro.model.resource.ResourceType;
 
-import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.OptimizedResourcesRootProvider;
+import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.OptimizedResourcesRootStrategy;
 
 /**
  * Base class for testing of {@link AbstractResourceUriStrategy} derivatives.
@@ -28,16 +28,16 @@ public abstract class ResourceUriStrategyTestBase extends PowerMockTestCase {
   @Mock
   private ServletContext servletContext;
   @Mock
-  private OptimizedResourcesRootProvider optimizedResourcesRootProvider;
+  private OptimizedResourcesRootStrategy optimizedResourcesRootStrategy;
 
-  protected OptimizedResourcesRootProvider getOptimizedResourcesRootProvider() {
-    return optimizedResourcesRootProvider;
+  protected OptimizedResourcesRootStrategy getOptimizedResourcesRootStrategy() {
+    return optimizedResourcesRootStrategy;
   }
 
   protected abstract ResourceUriStrategy getResourceUriStrategy();
 
   protected void givenWroRootHasBeenSetUp() {
-    when(optimizedResourcesRootProvider.getRoot()).thenReturn(ROOT);
+    when(optimizedResourcesRootStrategy.getRoot()).thenReturn(ROOT);
   }
 
   protected void givenContextPathHasBeenSetUp() {

@@ -13,7 +13,7 @@ import ro.isdc.wro.model.resource.support.AbstractConfigurableSingleStrategy;
 
 import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
 import com.github.lifus.wro4j_runtime_taglib.model.group.name.VersionedGroupNameFactory;
-import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.OptimizedResourcesRootProvider;
+import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.OptimizedResourcesRootStrategy;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy.provider.DefaultResourceUriStrategyProvider;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy.provider.ResourceUriStrategyProvider;
 
@@ -26,21 +26,21 @@ public final class ConfigurableResourceUriStrategy extends AbstractConfigurableS
   public static final String KEY = "resourceUriStrategy";
 
   private final WroManagerFactory wroManagerFactory;
-  private final OptimizedResourcesRootProvider optimizedResourcesRootProvider;
+  private final OptimizedResourcesRootStrategy optimizedResourcesRootStrategy;
   private final VersionedGroupNameFactory versionedGroupNameFactory;
   private final ConfigurationHelper configuration;
   private final String contextPath;
 
   public ConfigurableResourceUriStrategy(
     final WroManagerFactory wroManagerFactory,
-    final OptimizedResourcesRootProvider optimizedResourcesRootProvider,
+    final OptimizedResourcesRootStrategy optimizedResourcesRootStrategy,
     final VersionedGroupNameFactory versionedGroupNameFactory,
     final ConfigurationHelper configuration,
     final String contextPath
   ) {
 
     this.wroManagerFactory = wroManagerFactory;
-    this.optimizedResourcesRootProvider = optimizedResourcesRootProvider;
+    this.optimizedResourcesRootStrategy = optimizedResourcesRootStrategy;
     this.versionedGroupNameFactory = versionedGroupNameFactory;
     this.configuration = configuration;
     this.contextPath = contextPath;
@@ -59,7 +59,7 @@ public final class ConfigurableResourceUriStrategy extends AbstractConfigurableS
    */
   @Override
   protected ResourceUriStrategy getDefaultStrategy() {
-    return new VersionedResourceUriStrategy(contextPath, optimizedResourcesRootProvider, versionedGroupNameFactory);
+    return new VersionedResourceUriStrategy(contextPath, optimizedResourcesRootStrategy, versionedGroupNameFactory);
   }
 
   /**
@@ -95,7 +95,7 @@ public final class ConfigurableResourceUriStrategy extends AbstractConfigurableS
       contextPath,
       wroManagerFactory,
       configuration,
-      optimizedResourcesRootProvider,
+      optimizedResourcesRootStrategy,
       versionedGroupNameFactory
     );
     final Map<String, ResourceUriStrategy> strategies = strategyProvider.provideResourceUriStrategies();
