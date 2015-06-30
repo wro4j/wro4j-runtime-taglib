@@ -5,6 +5,7 @@
 package com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.provider;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.instanceOf;
@@ -19,6 +20,7 @@ import org.testng.annotations.Test;
 
 import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.InferredOptimizedResourcesRootStrategy;
+import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.PredefinedOptimizedResourceRootStrategy;
 
 /**
  * Test for {@link DefaultOptimizedResourcesRootStrategyProvider}.
@@ -30,13 +32,16 @@ public class DefaultOptimizedResourcesRootStrategyProviderTest extends PowerMock
 
   @BeforeMethod
   public void setUp() {
-    provider = new DefaultOptimizedResourcesRootStrategyProvider(mock(ServletContext.class));
+    provider = new DefaultOptimizedResourcesRootStrategyProvider(mock(ServletContext.class), mock(ConfigurationHelper.class));
   }
 
   @Test
   public void shouldProvideOptimizedResourceRootStrategies() {
     assertThat(provider.provideOptimizedResourcesRootStrategies(),
-        hasEntry(equalTo(InferredOptimizedResourcesRootStrategy.ALIAS), instanceOf(InferredOptimizedResourcesRootStrategy.class)));
+        both(
+            hasEntry(equalTo(InferredOptimizedResourcesRootStrategy.ALIAS), instanceOf(InferredOptimizedResourcesRootStrategy.class)))
+        .and(
+            hasEntry(equalTo(PredefinedOptimizedResourceRootStrategy.ALIAS), instanceOf(PredefinedOptimizedResourceRootStrategy.class))));
   }
 
 }

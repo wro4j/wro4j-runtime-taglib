@@ -64,7 +64,8 @@ public class ConfigurableOptimizedResourceRootStrategy
   @Override
   protected void overrideDefaultStrategyMap(final Map<String, OptimizedResourcesRootStrategy> map) {
     final DefaultOptimizedResourcesRootStrategyProvider strategyProvider = new DefaultOptimizedResourcesRootStrategyProvider(
-        servletContext
+        servletContext,
+        configurationHelper
     );
     final Map<String, OptimizedResourcesRootStrategy> strategies = strategyProvider.provideOptimizedResourcesRootStrategies();
     map.putAll(strategies);
