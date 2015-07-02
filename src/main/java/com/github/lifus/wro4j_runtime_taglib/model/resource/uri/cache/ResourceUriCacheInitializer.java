@@ -19,7 +19,7 @@ import com.github.lifus.wro4j_runtime_taglib.model.group.name.cache.GroupNameCac
 import com.github.lifus.wro4j_runtime_taglib.model.group.name.callback.DefaultVersionedGroupNameListener;
 import com.github.lifus.wro4j_runtime_taglib.model.group.name.callback.VersionedGroupNameCallbackRegistry;
 import com.github.lifus.wro4j_runtime_taglib.model.group.name.callback.VersionedGroupNameListener;
-import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.ConfigurableOptimizedResourceRootStrategy;
+import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.ConfigurableOptimizedResourcesRootStrategy;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.OptimizedResourcesRootStrategy;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy.ConfigurableResourceUriStrategy;
 
@@ -64,15 +64,15 @@ public final class ResourceUriCacheInitializer extends LazyInitializer<ResourceU
   private ConfigurableResourceUriStrategy createResourceUriStrategy() {
     return new ConfigurableResourceUriStrategy(
       wroManagerFactory,
-      createOptimizedResourceRootStrategy(),
+      createOptimizedResourcesRootStrategy(),
       createVersionedGroupNameFactory(),
       configuration,
       servletContext.getContextPath()
     );
   }
 
-  private OptimizedResourcesRootStrategy createOptimizedResourceRootStrategy() {
-    return new ConfigurableOptimizedResourceRootStrategy(servletContext, configuration);
+  private OptimizedResourcesRootStrategy createOptimizedResourcesRootStrategy() {
+    return new ConfigurableOptimizedResourcesRootStrategy(servletContext, configuration);
   }
 
   private VersionedGroupNameFactory createVersionedGroupNameFactory() {

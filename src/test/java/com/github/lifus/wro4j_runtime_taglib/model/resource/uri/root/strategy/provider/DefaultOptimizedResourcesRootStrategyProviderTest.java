@@ -20,7 +20,7 @@ import org.testng.annotations.Test;
 
 import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.InferredOptimizedResourcesRootStrategy;
-import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.PredefinedOptimizedResourceRootStrategy;
+import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.PredefinedOptimizedResourcesRootStrategy;
 
 /**
  * Test for {@link DefaultOptimizedResourcesRootStrategyProvider}.
@@ -36,12 +36,12 @@ public class DefaultOptimizedResourcesRootStrategyProviderTest extends PowerMock
   }
 
   @Test
-  public void shouldProvideOptimizedResourceRootStrategies() {
+  public void shouldProvideOptimizedResourcesRootStrategies() {
     assertThat(provider.provideOptimizedResourcesRootStrategies(),
         both(
             hasEntry(equalTo(InferredOptimizedResourcesRootStrategy.ALIAS), instanceOf(InferredOptimizedResourcesRootStrategy.class)))
         .and(
-            hasEntry(equalTo(PredefinedOptimizedResourceRootStrategy.ALIAS), instanceOf(PredefinedOptimizedResourceRootStrategy.class))));
+            hasEntry(equalTo(PredefinedOptimizedResourcesRootStrategy.ALIAS), instanceOf(PredefinedOptimizedResourcesRootStrategy.class))));
   }
 
 }

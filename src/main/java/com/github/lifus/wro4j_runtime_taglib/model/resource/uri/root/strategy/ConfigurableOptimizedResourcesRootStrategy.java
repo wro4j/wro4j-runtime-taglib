@@ -18,16 +18,16 @@ import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.pr
 /**
  * Creates the {@link OptimizedResourcesRootStrategy} associated with an alias read from properties file.
  */
-public class ConfigurableOptimizedResourceRootStrategy
+public class ConfigurableOptimizedResourcesRootStrategy
     extends AbstractConfigurableSingleStrategy<OptimizedResourcesRootStrategy, OptimizedResourcesRootStrategyProvider>
     implements OptimizedResourcesRootStrategy
 {
-  public static final String KEY = "optimizedResourceRootStrategy";
+  public static final String KEY = "optimizedResourcesRootStrategy";
 
   private final ServletContext servletContext;
   private final ConfigurationHelper configurationHelper;
 
-  public ConfigurableOptimizedResourceRootStrategy(final ServletContext servletContext, final ConfigurationHelper configurationHelper) {
+  public ConfigurableOptimizedResourcesRootStrategy(final ServletContext servletContext, final ConfigurationHelper configurationHelper) {
     this.servletContext = servletContext;
     this.configurationHelper = configurationHelper;
   }
@@ -60,7 +60,7 @@ public class ConfigurableOptimizedResourceRootStrategy
   }
 
   // the following method is required
-  // because ConfigurableProvider doesn't extend OptimizedResourceRootStrategyProvider
+  // because ConfigurableProvider doesn't extend OptimizedResourcesRootStrategyProvider
   @Override
   protected void overrideDefaultStrategyMap(final Map<String, OptimizedResourcesRootStrategy> map) {
     final DefaultOptimizedResourcesRootStrategyProvider strategyProvider = new DefaultOptimizedResourcesRootStrategyProvider(

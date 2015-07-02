@@ -4,7 +4,7 @@
  */
 package com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy;
 
-import static com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.PredefinedOptimizedResourceRootStrategy.VALUE_KEY;
+import static com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.PredefinedOptimizedResourcesRootStrategy.VALUE_KEY;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -20,21 +20,21 @@ import ro.isdc.wro.WroRuntimeException;
 import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
 
 /**
- * Tests for {@link PredefinedOptimizedResourceRootStrategy}.
+ * Tests for {@link PredefinedOptimizedResourcesRootStrategy}.
  */
 @PrepareForTest(ConfigurationHelper.class)
-public class PredefinedOptimizedResourceRootStrategyTest extends PowerMockTestCase {
+public class PredefinedOptimizedResourcesRootStrategyTest extends PowerMockTestCase {
 
   private static String ROOT = "/wro/";
 
-  private PredefinedOptimizedResourceRootStrategy predefinedOptimizedResourceRootStrategy;
+  private PredefinedOptimizedResourcesRootStrategy predefinedOptimizedResourcesRootStrategy;
 
   @Mock
   private ConfigurationHelper configurationHelper;
 
   @BeforeMethod
   public void setUp() {
-    predefinedOptimizedResourceRootStrategy = new PredefinedOptimizedResourceRootStrategy(configurationHelper);
+    predefinedOptimizedResourcesRootStrategy = new PredefinedOptimizedResourcesRootStrategy(configurationHelper);
   }
 
   @Test
@@ -42,14 +42,14 @@ public class PredefinedOptimizedResourceRootStrategyTest extends PowerMockTestCa
     when(configurationHelper.containsKey(VALUE_KEY)).thenReturn(true);
     when(configurationHelper.getProperty(VALUE_KEY)).thenReturn(ROOT);
 
-    assertThat(predefinedOptimizedResourceRootStrategy.getRoot(), is(ROOT));
+    assertThat(predefinedOptimizedResourcesRootStrategy.getRoot(), is(ROOT));
   }
 
   @Test(expectedExceptions=WroRuntimeException.class)
   public void shouldThrowExceptionIfRootIsNotConfigured() {
     when(configurationHelper.containsKey(VALUE_KEY)).thenReturn(false);
 
-    predefinedOptimizedResourceRootStrategy.getRoot();
+    predefinedOptimizedResourcesRootStrategy.getRoot();
   }
 
 }

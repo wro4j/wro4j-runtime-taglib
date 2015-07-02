@@ -12,7 +12,7 @@ import javax.servlet.ServletContext;
 import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.InferredOptimizedResourcesRootStrategy;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.OptimizedResourcesRootStrategy;
-import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.PredefinedOptimizedResourceRootStrategy;
+import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.PredefinedOptimizedResourcesRootStrategy;
 
 public class DefaultOptimizedResourcesRootStrategyProvider implements OptimizedResourcesRootStrategyProvider {
 
@@ -28,7 +28,7 @@ public class DefaultOptimizedResourcesRootStrategyProvider implements OptimizedR
   public Map<String, OptimizedResourcesRootStrategy> provideOptimizedResourcesRootStrategies() {
     final Map<String, OptimizedResourcesRootStrategy> map = new HashMap<>();
     map.put(InferredOptimizedResourcesRootStrategy.ALIAS, new InferredOptimizedResourcesRootStrategy(servletContext));
-    map.put(PredefinedOptimizedResourceRootStrategy.ALIAS, new PredefinedOptimizedResourceRootStrategy(configurationHelper));
+    map.put(PredefinedOptimizedResourcesRootStrategy.ALIAS, new PredefinedOptimizedResourcesRootStrategy(configurationHelper));
     return map;
   }
 

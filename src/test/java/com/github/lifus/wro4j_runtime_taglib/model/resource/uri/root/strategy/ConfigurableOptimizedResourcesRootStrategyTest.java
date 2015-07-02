@@ -28,10 +28,10 @@ import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.provider.OptimizedResourcesRootStrategyProvider;
 
 @PrepareForTest(ConfigurationHelper.class)
-public class ConfigurableOptimizedResourceRootStrategyTest  extends PowerMockTestCase {
+public class ConfigurableOptimizedResourcesRootStrategyTest  extends PowerMockTestCase {
   private static final String ROOT = "root";
 
-  private ConfigurableOptimizedResourceRootStrategy configurableOptimizedResourceRootStrategy;
+  private ConfigurableOptimizedResourcesRootStrategy configurableOptimizedResourcesRootStrategy;
 
   @Mock
   private ServletContext servletContext;
@@ -40,17 +40,17 @@ public class ConfigurableOptimizedResourceRootStrategyTest  extends PowerMockTes
 
   @BeforeMethod
   public void setUp() {
-    configurableOptimizedResourceRootStrategy = new ConfigurableOptimizedResourceRootStrategy(servletContext, configurationHelper);
+    configurableOptimizedResourcesRootStrategy = new ConfigurableOptimizedResourcesRootStrategy(servletContext, configurationHelper);
   }
 
   @Test
   public void shouldReturnStrategyKey() {
-    assertThat(configurableOptimizedResourceRootStrategy.getStrategyKey(), is(ConfigurableOptimizedResourceRootStrategy.KEY));
+    assertThat(configurableOptimizedResourcesRootStrategy.getStrategyKey(), is(ConfigurableOptimizedResourcesRootStrategy.KEY));
   }
 
   @Test
   public void shouldReturnDefaultStrategy() {
-    assertThat(configurableOptimizedResourceRootStrategy.getDefaultStrategy(), is(instanceOf(OptimizedResourcesRootStrategy.class)));
+    assertThat(configurableOptimizedResourcesRootStrategy.getDefaultStrategy(), is(instanceOf(OptimizedResourcesRootStrategy.class)));
   }
 
   @Test
@@ -59,29 +59,29 @@ public class ConfigurableOptimizedResourceRootStrategyTest  extends PowerMockTes
     final Map<String, OptimizedResourcesRootStrategy> strategies = new HashMap<>();
     when(provider.provideOptimizedResourcesRootStrategies()).thenReturn(strategies);
 
-    assertThat(configurableOptimizedResourceRootStrategy.getStrategies(provider), is(strategies));
+    assertThat(configurableOptimizedResourcesRootStrategy.getStrategies(provider), is(strategies));
 
     verify(provider).provideOptimizedResourcesRootStrategies();
   }
 
   @Test
   public void shouldReturnClassOfProvider() {
-    assertThat(configurableOptimizedResourceRootStrategy.getProviderClass(), is(equalTo(OptimizedResourcesRootStrategyProvider.class)));
+    assertThat(configurableOptimizedResourcesRootStrategy.getProviderClass(), is(equalTo(OptimizedResourcesRootStrategyProvider.class)));
   }
 
   @Test
   public void shouldCreateProperties() {
     final Properties properties = mock(Properties.class);
-    when(configurationHelper.getPropertiesForKey(ConfigurableOptimizedResourceRootStrategy.KEY)).thenReturn(properties);
+    when(configurationHelper.getPropertiesForKey(ConfigurableOptimizedResourcesRootStrategy.KEY)).thenReturn(properties);
 
-    assertThat(configurableOptimizedResourceRootStrategy.newProperties(), is(properties));
+    assertThat(configurableOptimizedResourcesRootStrategy.newProperties(), is(properties));
   }
 
   @Test
   public void shouldOverrideDefaultStrategyMap() {
     final Map<String, OptimizedResourcesRootStrategy> strategies = new HashMap<>();
 
-    configurableOptimizedResourceRootStrategy.overrideDefaultStrategyMap(strategies);
+    configurableOptimizedResourcesRootStrategy.overrideDefaultStrategyMap(strategies);
 
     assertThat(strategies.size(), is(greaterThan(0)));
   }
@@ -90,13 +90,13 @@ public class ConfigurableOptimizedResourceRootStrategyTest  extends PowerMockTes
   public void shouldReturnUris() {
     givenConfiguredRootIs(ROOT);
 
-    assertThat(configurableOptimizedResourceRootStrategy.getRoot(), is(ROOT));
+    assertThat(configurableOptimizedResourcesRootStrategy.getRoot(), is(ROOT));
   }
 
   private void givenConfiguredRootIs(final String root) {
     @SuppressWarnings("unchecked")
     final LazyInitializer<OptimizedResourcesRootStrategy> lazyInitializer = mock(LazyInitializer.class);
-    setInternalState(configurableOptimizedResourceRootStrategy, "lazyInitializer", lazyInitializer);
+    setInternalState(configurableOptimizedResourcesRootStrategy, "lazyInitializer", lazyInitializer);
     final OptimizedResourcesRootStrategy rootStrategy = mock(OptimizedResourcesRootStrategy.class);
     when(lazyInitializer.get()).thenReturn(rootStrategy);
     when(rootStrategy.getRoot()).thenReturn(root);
