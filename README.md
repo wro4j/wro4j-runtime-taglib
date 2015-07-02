@@ -75,6 +75,23 @@ Resources that should be rendered. Specify one of the following values:
 | versioned   | Render optimized resources and version their URIs                                        |
 | unoptimized | Render unprocessed resources. Supported [uriLocators][1] are [servletContext and uri][5].|
 
+### optimizedResourceRootStrategy
+
+_Default: inferred_.
+
+Strategy to find the root of optimized resources. Specify one of the following values:
+
+| Value      |                                                                       |
+| -----------| ----------------------------------------------------------------------|
+| inferred   | Use value of the first url-pattern for the first WroFilter in web.xml |
+| predefined | Use value of optimizedResourceRoot property in wro.properties         |
+
+### optimizedResourceRoot
+
+The root of optimized resources. Required when `optimizedResourceRootStrategy` is `predefined`, ignored when `optimizedResourceRootStrategy` is `inferred`.
+
+_Example:_ `optimizedResourceRoot=/wro/`
+
 # License
 
 This project is available under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
