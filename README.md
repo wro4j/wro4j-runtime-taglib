@@ -1,4 +1,5 @@
 [![Build Status](https://img.shields.io/circleci/project/wro4j/wro4j-runtime-taglib/master.svg)](https://circleci.com/gh/wro4j/wro4j-runtime-taglib/tree/master)
+[![Build Status](https://img.shields.io/codecov/c/github/wro4j/wro4j-runtime-taglib/master.svg)](https://codecov.io/github/wro4j/wro4j-runtime-taglib?branch=master)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.lifus/wro4j-runtime-taglib/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.lifus/wro4j-runtime-taglib/badge.svg)
 
 # Features
