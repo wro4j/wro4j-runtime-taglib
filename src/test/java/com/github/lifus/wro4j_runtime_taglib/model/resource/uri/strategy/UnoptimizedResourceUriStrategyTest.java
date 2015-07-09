@@ -57,7 +57,12 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
 
   @BeforeMethod
   public void setUp() {
-    unoptimizedResourceUriStrategy = new UnoptimizedResourceUriStrategy(CONTEXT_PATH, wroManagerFactory, getConfigurationHelper(), getOptimizedResourcesRootStrategy());
+    unoptimizedResourceUriStrategy = new UnoptimizedResourceUriStrategy(
+      CONTEXT_PATH,
+      wroManagerFactory,
+      getConfigurationHelper(),
+      getOptimizedResourcesRootStrategy()
+    );
   }
 
   @Test(expectedExceptions=WroRuntimeException.class)

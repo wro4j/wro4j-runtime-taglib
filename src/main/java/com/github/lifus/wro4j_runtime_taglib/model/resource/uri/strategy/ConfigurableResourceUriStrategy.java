@@ -59,7 +59,12 @@ public final class ConfigurableResourceUriStrategy extends AbstractConfigurableS
    */
   @Override
   protected ResourceUriStrategy getDefaultStrategy() {
-    return new VersionedResourceUriStrategy(contextPath, optimizedResourcesRootStrategy, versionedGroupNameFactory, configuration);
+    return new VersionedResourceUriStrategy(
+      contextPath,
+      optimizedResourcesRootStrategy,
+      versionedGroupNameFactory,
+      configuration
+    );
   }
 
   /**

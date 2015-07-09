@@ -52,11 +52,21 @@ public final class DefaultResourceUriStrategyProvider implements ResourceUriStra
     final HashMap<String, ResourceUriStrategy> map = new HashMap<>();
     map.put(
       VersionedResourceUriStrategy.ALIAS,
-      new VersionedResourceUriStrategy(contextPath, optimizedResourcesRootStrategy, versionedGroupNameFactory, configuration)
+      new VersionedResourceUriStrategy(
+        contextPath,
+        optimizedResourcesRootStrategy,
+        versionedGroupNameFactory,
+        configuration
+      )
     );
     map.put(
       UnoptimizedResourceUriStrategy.ALIAS,
-      new UnoptimizedResourceUriStrategy(contextPath, wroManagerFactory, configuration, optimizedResourcesRootStrategy)
+      new UnoptimizedResourceUriStrategy(
+        contextPath,
+        wroManagerFactory,
+        configuration,
+        optimizedResourcesRootStrategy
+      )
     );
     return map;
   }

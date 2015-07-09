@@ -31,7 +31,11 @@ public abstract class AbstractResourceUriStrategy implements ResourceUriStrategy
     }
   };
 
-  protected AbstractResourceUriStrategy(final String contextPath, final OptimizedResourcesRootStrategy optimizedResourcesRootStrategy, final ConfigurationHelper configuration) {
+  protected AbstractResourceUriStrategy(
+    final String contextPath,
+    final OptimizedResourcesRootStrategy optimizedResourcesRootStrategy,
+    final ConfigurationHelper configuration
+  ) {
     this.contextPath = contextPath;
     this.optimizedResourcesRootStrategy = optimizedResourcesRootStrategy;
     this.configuration = configuration;
