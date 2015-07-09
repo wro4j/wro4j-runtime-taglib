@@ -93,6 +93,12 @@ The root of optimized resources. Required when `optimizedResourcesRootStrategy` 
 
 _Example:_ `optimizedResourcesRoot=/wro/`
 
+### resourceDomain
+
+The domain that is used to serve resources to your users.
+
+_Example:_ `resourceDomain=//your-cdn.com`
+
 # License
 
 This project is available under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
