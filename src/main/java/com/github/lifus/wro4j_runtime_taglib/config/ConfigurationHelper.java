@@ -67,6 +67,19 @@ public final class ConfigurationHelper {
   }
 
   /**
+   * Returns value from WRO configuration or fallbacks to default one.
+   *
+   * @param key
+   *          the property key.
+   * @param defaultValue
+   *          a default value.
+   * @return value from WRO configuration or default one.
+   */
+  public String getProperty(final String key, final String defaultValue) {
+    return wroProperties.getProperty(key, defaultValue);
+  }
+
+  /**
    * Instantiates {@link Properties} objects for a given key.
    * Enforces immutability of underlying WRO properties.
    *

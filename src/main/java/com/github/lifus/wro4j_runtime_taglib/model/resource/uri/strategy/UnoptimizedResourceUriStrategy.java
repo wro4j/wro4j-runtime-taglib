@@ -38,8 +38,6 @@ public final class UnoptimizedResourceUriStrategy extends AbstractResourceUriStr
 
   private final WroManagerFactory wroManagerFactory;
 
-  private final ConfigurationHelper configuration;
-
   private final LazyInitializer<String> proxyPrefixInitializer = new LazyInitializer<String>() {
     @Override
     protected String initialize() {
@@ -53,9 +51,8 @@ public final class UnoptimizedResourceUriStrategy extends AbstractResourceUriStr
     final ConfigurationHelper configurationHelper,
     final OptimizedResourcesRootStrategy optimizedResourcesRootStrategy
   ) {
-    super(contextPath, optimizedResourcesRootStrategy);
+    super(contextPath, optimizedResourcesRootStrategy, configurationHelper);
     this.wroManagerFactory = wroManagerFactory;
-    this.configuration = configurationHelper;
   }
 
   /**

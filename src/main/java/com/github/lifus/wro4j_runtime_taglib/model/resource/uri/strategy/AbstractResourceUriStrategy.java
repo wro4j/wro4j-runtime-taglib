@@ -6,6 +6,7 @@ package com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy;
 
 import ro.isdc.wro.util.LazyInitializer;
 
+import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.OptimizedResourcesRootStrategy;
 
 /**
@@ -13,20 +14,27 @@ import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.Op
  */
 public abstract class AbstractResourceUriStrategy implements ResourceUriStrategy {
 
-  private final String contextPath;
+  // available for tests
+  static final String RESOURCE_DOMAIN_KEY = "resourceDomain";
+  // there is no default resource domain
+  static final String DEFAULT_RESOURCE_DOMAIN = "";
 
+  protected final ConfigurationHelper configuration;
+
+  private final String contextPath;
   private final OptimizedResourcesRootStrategy optimizedResourcesRootStrategy;
 
   private final LazyInitializer<String> wroRootInitializer = new LazyInitializer<String>() {
     @Override
     protected String initialize() {
-      return getContextPath() + optimizedResourcesRootStrategy.getRoot();
+      return getResourceDomain() + getContextPath() + optimizedResourcesRootStrategy.getRoot();
     }
   };
 
-  protected AbstractResourceUriStrategy(final String contextPath, final OptimizedResourcesRootStrategy optimizedResourcesRootStrategy) {
+  protected AbstractResourceUriStrategy(final String contextPath, final OptimizedResourcesRootStrategy optimizedResourcesRootStrategy, final ConfigurationHelper configuration) {
     this.contextPath = contextPath;
     this.optimizedResourcesRootStrategy = optimizedResourcesRootStrategy;
+    this.configuration = configuration;
   }
 
   /**
@@ -41,6 +49,10 @@ public abstract class AbstractResourceUriStrategy implements ResourceUriStrategy
    */
   protected String getWroRoot() {
     return wroRootInitializer.get();
+  }
+
+  private String getResourceDomain() {
+    return configuration.getProperty(RESOURCE_DOMAIN_KEY, DEFAULT_RESOURCE_DOMAIN);
   }
 
 }

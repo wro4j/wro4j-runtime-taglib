@@ -7,6 +7,7 @@ package com.github.lifus.wro4j_runtime_taglib.model.resource.uri.strategy;
 import ro.isdc.wro.model.resource.ResourceType;
 import ro.isdc.wro.util.LazyInitializer;
 
+import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
 import com.github.lifus.wro4j_runtime_taglib.model.group.name.VersionedGroupNameFactory;
 import com.github.lifus.wro4j_runtime_taglib.model.resource.uri.root.strategy.OptimizedResourcesRootStrategy;
 
@@ -30,10 +31,11 @@ public final class VersionedResourceUriStrategy extends AbstractResourceUriStrat
   public VersionedResourceUriStrategy(
     final String contextPath,
     final OptimizedResourcesRootStrategy optimizedResourcesRootStrategy,
-    final VersionedGroupNameFactory versionedGroupNameFactory
+    final VersionedGroupNameFactory versionedGroupNameFactory,
+    final ConfigurationHelper configuration
   ) {
 
-    super(contextPath, optimizedResourcesRootStrategy);
+    super(contextPath, optimizedResourcesRootStrategy, configuration);
     this.versionedGroupNameFactory = versionedGroupNameFactory;
   }
 

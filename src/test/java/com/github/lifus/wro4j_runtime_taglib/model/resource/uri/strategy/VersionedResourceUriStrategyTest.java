@@ -21,7 +21,8 @@ import com.github.lifus.wro4j_runtime_taglib.model.group.name.VersionedGroupName
 public class VersionedResourceUriStrategyTest extends ResourceUriStrategyTestBase {
 
   private static final String VERSIONED_NAME = "publicName";
-  private static final String EXPECTED_URI = CONTEXT_PATH + ROOT + VERSIONED_NAME + "." + RESOURCE_TYPE.name().toLowerCase();
+  private static final String EXPECTED_LOCAL_URI = CONTEXT_PATH + ROOT + VERSIONED_NAME + "." + RESOURCE_TYPE.name().toLowerCase();
+  private static final String EXPECTED_GLOBAL_URI = RESOURCE_DOMAIN + EXPECTED_LOCAL_URI;
 
   private VersionedResourceUriStrategy versionedResourceUriStrategy;
 
@@ -35,16 +36,27 @@ public class VersionedResourceUriStrategyTest extends ResourceUriStrategyTestBas
 
   @BeforeMethod
   public void setUp() {
-    versionedResourceUriStrategy = new VersionedResourceUriStrategy(CONTEXT_PATH, getOptimizedResourcesRootStrategy(), versionedGroupNameFactory);
+    versionedResourceUriStrategy = new VersionedResourceUriStrategy(CONTEXT_PATH, getOptimizedResourcesRootStrategy(), versionedGroupNameFactory, getConfigurationHelper());
   }
 
   @Test
-  public void shouldReturnPath() {
+  public void shouldReturnRelativePathIfDomainHasNotBeenSetUp() {
+    givenResourceDomainHasNotBeenSetUp();
     givenContextPathHasBeenSetUp();
     givenWroRootHasBeenSetUp();
     givenVesrionedNameGenerated();
 
-    assertThat(whenGetResourceUris(), is(arrayContaining(EXPECTED_URI)));
+    assertThat(whenGetResourceUris(), is(arrayContaining(EXPECTED_LOCAL_URI)));
+  }
+
+  @Test
+  public void shouldReturnExternalPathIfDomainHasNotBeenSetUp() {
+    givenResourceDomainHasBeenSetUp();
+    givenContextPathHasBeenSetUp();
+    givenWroRootHasBeenSetUp();
+    givenVesrionedNameGenerated();
+
+    assertThat(whenGetResourceUris(), is(arrayContaining(EXPECTED_GLOBAL_URI)));
   }
 
   private void givenVesrionedNameGenerated() {

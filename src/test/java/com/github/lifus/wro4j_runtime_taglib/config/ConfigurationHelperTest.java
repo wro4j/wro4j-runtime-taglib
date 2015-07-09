@@ -27,6 +27,7 @@ public class ConfigurationHelperTest extends PowerMockTestCase {
 
   private static final String KEY = "key";
   private static final String VALUE = "value";
+  private static final String DEFAULT_VALUE = "default value";
 
   private ConfigurationHelper configurationHelper;
 
@@ -69,6 +70,15 @@ public class ConfigurationHelperTest extends PowerMockTestCase {
     givenPropertiesHasBeenSetUp();
 
     assertThat(configurationHelper.getProperty(KEY), is(nullValue()));
+  }
+
+  @Test
+  public void shouldReturnDefaultValueForKeyThatIsNotInWroProperties() {
+    givenPropertiesHasBeenSetUp();
+
+    when(wroProperties.getProperty(KEY, DEFAULT_VALUE)).thenReturn(DEFAULT_VALUE);
+
+    assertThat(configurationHelper.getProperty(KEY, DEFAULT_VALUE), is(DEFAULT_VALUE));
   }
 
   @Test

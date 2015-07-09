@@ -22,7 +22,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import ro.isdc.wro.WroRuntimeException;
-import ro.isdc.wro.config.jmx.WroConfiguration;
 import ro.isdc.wro.manager.WroManager;
 import ro.isdc.wro.manager.factory.WroManagerFactory;
 import ro.isdc.wro.model.WroModel;
@@ -30,12 +29,10 @@ import ro.isdc.wro.model.factory.WroModelFactory;
 import ro.isdc.wro.model.group.Group;
 import ro.isdc.wro.model.resource.Resource;
 
-import com.github.lifus.wro4j_runtime_taglib.config.ConfigurationHelper;
-
 /**
  * Tests for {@link UnoptimizedResourceUriStrategy}.
  */
-@PrepareForTest({WroManager.class, WroModel.class, Group.class, WroConfiguration.class, ConfigurationHelper.class})
+@PrepareForTest({WroManager.class, WroModel.class, Group.class})
 public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestBase {
 
   private static final String URI = "uri";
@@ -43,7 +40,8 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
   private static final String ABSOLUTE_URI = "http://example.com";
   private static final String PROTECTED_URI = "/WEB-INF/" + URI;
   private static final String EXPECTED_PUBLIC_URI = CONTEXT_PATH + URI;
-  private static final String EXPECTED_PROTECTED_URI = CONTEXT_PATH + ROOT + "?wroAPI=wroResources&id=" + PROTECTED_URI;
+  private static final String EXPECTED_LOCAL_PROTECTED_URI = CONTEXT_PATH + ROOT + "?wroAPI=wroResources&id=" + PROTECTED_URI;
+  private static final String EXPECTED_EXTERNAL_PROTECTED_URI = RESOURCE_DOMAIN + EXPECTED_LOCAL_PROTECTED_URI;
 
   private UnoptimizedResourceUriStrategy unoptimizedResourceUriStrategy;
 
@@ -51,8 +49,6 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
   private WroManagerFactory wroManagerFactory;
   @Mock
   private WroModel wroModel;
-  @Mock
-  private ConfigurationHelper configurationHelper;
 
   @Override
   protected ResourceUriStrategy getResourceUriStrategy() {
@@ -61,7 +57,7 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
 
   @BeforeMethod
   public void setUp() {
-    unoptimizedResourceUriStrategy = new UnoptimizedResourceUriStrategy(CONTEXT_PATH, wroManagerFactory, configurationHelper, getOptimizedResourcesRootStrategy());
+    unoptimizedResourceUriStrategy = new UnoptimizedResourceUriStrategy(CONTEXT_PATH, wroManagerFactory, getConfigurationHelper(), getOptimizedResourcesRootStrategy());
   }
 
   @Test(expectedExceptions=WroRuntimeException.class)
@@ -107,13 +103,25 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
   }
 
   @Test
-  public void shouldReturnProtectedUriIfThereIsSuchResource() {
+  public void shouldReturnLocalProtectedUriIfThereIsSuchResourceAndDomainHasNotBeenSetUp() {
     givenWroManagerFactoryIsCorrect();
     givenModelContains(group(withResource(PROTECTED_URI)));
+    givenResourceDomainHasNotBeenSetUp();
     givenContextPathHasBeenSetUp();
     givenWroRootHasBeenSetUp();
 
-    assertThat(whenGetResourceUris(), arrayContaining(EXPECTED_PROTECTED_URI));
+    assertThat(whenGetResourceUris(), arrayContaining(EXPECTED_LOCAL_PROTECTED_URI));
+  }
+
+  @Test
+  public void shouldReturnExternalProtectedUriIfThereIsSuchResourceAndDomainHasBeenSetUp() {
+    givenWroManagerFactoryIsCorrect();
+    givenModelContains(group(withResource(PROTECTED_URI)));
+    givenResourceDomainHasBeenSetUp();
+    givenContextPathHasBeenSetUp();
+    givenWroRootHasBeenSetUp();
+
+    assertThat(whenGetResourceUris(), arrayContaining(EXPECTED_EXTERNAL_PROTECTED_URI));
   }
 
   @Test
@@ -138,7 +146,7 @@ public class UnoptimizedResourceUriStrategyTest extends ResourceUriStrategyTestB
   }
 
   private void givenIgnoreEmptyGroupIs(final boolean value) {
-    when(configurationHelper.isIgnoreEmptyGroup()).thenReturn(value);
+    when(getConfigurationHelper().isIgnoreEmptyGroup()).thenReturn(value);
   }
 
   private Group group(final List<Resource> resources) {
