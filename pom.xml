@@ -8,7 +8,7 @@
 
   <name>runtime tag library for wro4j</name>
   <description>This is a tag library that provides additional features to wro4j run-time solution.</description>
-  <url>https://github.com/lifus/wro4j-runtime-taglib</url>
+  <url>https://github.com/wro4j/wro4j-runtime-taglib</url>
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -17,9 +17,9 @@
     </license>
   </licenses>
   <scm>
-    <connection>scm:git:https://github.com/lifus/wro4j-runtime-taglib.git</connection>
-    <developerConnection>scm:git:git@github.com:lifus/wro4j-runtime-taglib.git</developerConnection>
-    <url>http://github.com/lifus/wro4j-runtime-taglib.git</url>
+    <connection>scm:git:https://github.com/wro4j/wro4j-runtime-taglib.git</connection>
+    <developerConnection>scm:git:git@github.com:wro4j/wro4j-runtime-taglib.git</developerConnection>
+    <url>http://github.com/wro4j/wro4j-runtime-taglib.git</url>
     <tag>HEAD</tag>
   </scm>
   <developers>
